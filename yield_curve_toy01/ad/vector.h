@@ -35,6 +35,20 @@ namespace ad {
         return expression_type(e1(), e2());
     }
 
+    template <typename E1, typename E2> 
+    typename vector_binary_traits<E1, E2, scalar_mult<typename E1::value_type, typename E2::value_type> >::result_type
+        operator * (
+            const vector_expression<E1>& e1, 
+            const vector_expression<E2>& e2)
+    {
+        typedef typename E1::value_type value1_type;
+        typedef typename E2::value_type value2_type;
+        typedef 
+            typename vector_binary_traits<E1, E2, scalar_mult<value1_type, value2_type> >
+                ::expression_type expression_type;
+        return expression_type(e1(), e2());
+    }
+
     template <typename T>
     class Vector : public vector_expression< Vector<T> > {
     public:

@@ -15,3 +15,5 @@
        std::cout << i << ":" << v(i) << std::endl;      \
     }                                                   
 
+#define DISPLAY_VAR(v)                                  \
+    std::cout << #v ":" << v << std::endl;
