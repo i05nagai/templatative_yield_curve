@@ -1,4 +1,5 @@
-#pragma once
+#ifndef AD_TYPE_TRAITS_H_INCLUDED
+#define AD_TYPE_TRAITS_H_INCLUDED
 
 namespace ad {
     template <typename T>
@@ -17,4 +18,6 @@ namespace ad {
     };
 
 } // namespace ad {
+
+#endif // #ifndef AD_TYPE_TRAITS_H_INCLUDED
 

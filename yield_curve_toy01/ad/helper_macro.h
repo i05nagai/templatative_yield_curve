@@ -1,4 +1,6 @@
-#pragma once
+#ifndef AD_HELPER_MACRO_H_INCLUDED
+#define AD_HELPER_MACRO_H_INCLUDED
+
 
 #include <iostream>
 
@@ -17,3 +19,6 @@
 
 #define DISPLAY_VAR(v)                                  \
     std::cout << #v ":" << v << std::endl;
+
+#endif // #ifndef AD_HELPER_MACRO_H_INCLUDED
+
