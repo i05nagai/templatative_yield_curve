@@ -33,9 +33,7 @@ namespace ad {
         typedef typename E::value_type value_type;
         typedef E expression_type;
         typedef typename E::const_closure_type expression_closure_type;
-        typedef 
-            typename type_traits<typename Op::result_type>::const_reference 
-                const_reference;
+        typedef value_type const_reference;
         typedef const self_type const_closure_type;
     public:
         vector_unary(const expression_type& e)
@@ -63,6 +61,9 @@ namespace ad {
         typedef expression_type result_type;
     };
 
+    /*
+     * binary expression
+     */
     template <typename E1, typename E2, typename Op>
     class vector_binary : 
         public vector_expression<vector_binary<E1, E2, Op> > {
@@ -81,7 +82,7 @@ namespace ad {
             promote_traits<size1_type, size2_type>::type size_type;
         typedef typename 
             promote_traits<value1_type, value2_type>::type value_type;
-        typedef typename Op::result_type const_reference;
+        typedef value_type const_reference;
         typedef const self_type const_closure_type;
     public:
         vector_binary(const expression1_type& e1, const expression2_type& e2)

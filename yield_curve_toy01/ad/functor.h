@@ -13,34 +13,31 @@ namespace ad {
         typedef typename type_traits<T>::const_reference argument_type;
         typedef T result_type;
 
-        static result_type apply(
-            argument_type v)
+        static result_type apply(argument_type v)
         {
             return -v;
         }
     };
 
     template <typename T>
-    class scalar_exp {
+    class unary_exp {
     public:
         typedef typename type_traits<T>::const_reference argument_type;
         typedef T result_type;
 
-        static result_type apply(
-            argument_type v)
+        static result_type apply(argument_type v)
         {
             return std::exp(v);
         }
     };
 
     template <typename T>
-    class scalar_log {
+    class unary_log {
     public:
         typedef typename type_traits<T>::const_reference argument_type;
         typedef T result_type;
 
-        static result_type apply(
-            argument_type v)
+        static result_type apply(argument_type v)
         {
             return std::log(v);
         }

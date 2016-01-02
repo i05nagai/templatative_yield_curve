@@ -3,6 +3,7 @@
 #include "helper_macro.h"
 #include "vector.h"
 #include "dual.h"
+#include "function.h"
 
 template <typename T>
 struct func_scalar_traits {
@@ -66,7 +67,8 @@ int main(int argc, char const* argv[])
     }
 
     {
-        ad::Vector<double> v4 = v1 + v2 - v3;
+        std::cout << 0.1 + std::exp(0.2) - 0.3 << std::endl;
+        ad::Vector<double> v4 = v1 + ad::log(ad::exp(v2)) + (-v3);
         DISPLAY_VECTOR_INFOS(v1);
         DISPLAY_VECTOR_INFOS(v2);
         DISPLAY_VECTOR_INFOS(v3);
