@@ -2,14 +2,15 @@
 #define AD_FUNCTION_H_INCLUDED
 
 #include "dual.h"
+#include "functor.h"
 
 namespace ad {
     /*
      * exponetial function.
      */
-    //E is vector_binary, vector_unary, Vector
+
     template <typename E>
-    struct exp_traits {
+    struct exp_traits<vector_expression<E> > {
     private:
         typedef typename E::value_type value_type;
         typedef scalar_exp<value_type> functor_type;
@@ -22,25 +23,30 @@ namespace ad {
         }
     };
 
-    template <typename E>
-    typename exp_traits<E>::result_type 
-    exp(const vector_expression<E>& e)
+    double exp(const double e)
     {
-        return exp_traits<E>::apply(e);
+        return std::exp(e);
+    }
+
+    template <typename E> dual<E> exp(const dual<E>& e)
+    {
+        return dual<E>(std::exp(e.v()), e.d() * std::exp(e.v()));
     }
 
     template <typename E>
-    dual<E> exp(const dual<E>& e)
+    typename exp_traits<vector_expression<E> >::result_type 
+    exp(const vector_expression<E>& e)
     {
-        return dual<E>(std::exp(e._a), e._b * std::exp(e._a));
+        typedef exp_traits<vector_expression<E> > Tr;
+        return Tr::apply(e);
     }
 
     /*
      * logarithmic function.
      */
-    //E is vector_unary, vector_binary, double, Vector,
+    //E is vector_expression
     template <typename E>
-    struct log_traits {
+    struct log_traits<vector_expression<E> > {
     private:
         typedef typename E::value_type value_type;
         typedef scalar_log<value_type> functor_type;
@@ -53,19 +59,24 @@ namespace ad {
         }
     };
 
-    template <typename E>
-    typename log_traits<E>::result_type log(const vector_expression<E>& e)
+    double log(const double e)
     {
-        return log_traits<E>::apply(e);
+        return std::log(e);
+    }
+
+    template <typename E> dual<E> log(const dual<E>& e)
+    {
+        return dual<E>(std::log(e.v()), e.d() / e.v());
     }
 
     template <typename E>
-    dual<E> log(const dual<E>& e)
+    typename log_traits<vector_expression<E> >::result_type 
+        log(const vector_expression<E>& e)
     {
-        //TODO:need to check value of e._a
-        return dual<E>(std::log(e._a), e._b / e._a);
+        typedef log_traits<vector_expression<E> > Tr;
+        return Tr::apply(e);
     }
-    
+
 } // namespace ad {
 
 #endif // #ifndef AD_FUNCTION_H_INCLUDED

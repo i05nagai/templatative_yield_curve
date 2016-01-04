@@ -2,6 +2,7 @@
 #define AD_FUNCTOR_H_INCLUDED
 
 #include <cmath>
+#include "fwd.h"
 
 namespace ad {
     /*
@@ -20,26 +21,26 @@ namespace ad {
     };
 
     template <typename T>
-    class unary_exp {
+    class scalar_exp {
     public:
         typedef typename type_traits<T>::const_reference argument_type;
         typedef T result_type;
 
         static result_type apply(argument_type v)
         {
-            return std::exp(v);
+            return ad::exp(v);
         }
     };
 
     template <typename T>
-    class unary_log {
+    class scalar_log {
     public:
         typedef typename type_traits<T>::const_reference argument_type;
         typedef T result_type;
 
         static result_type apply(argument_type v)
         {
-            return std::log(v);
+            return ad::log(v);
         }
     };
 
