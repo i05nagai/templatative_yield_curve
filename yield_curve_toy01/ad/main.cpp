@@ -5,6 +5,8 @@
 #include "dual.h"
 #include "function.h"
 
+#include "test/log_test.h"
+
 template <typename T>
 struct func_scalar_traits {
 private:
@@ -67,7 +69,6 @@ int main(int argc, char const* argv[])
     }
 
     {
-        std::cout << 0.1 + std::exp(0.2) - 0.3 << std::endl;
         ad::Vector<double> v4 = v1 + ad::log(ad::exp(v2)) + (-v3);
         DISPLAY_VECTOR_INFOS(v1);
         DISPLAY_VECTOR_INFOS(v2);
@@ -88,8 +89,17 @@ int main(int argc, char const* argv[])
         ad::dual<double> x(3.0, 1.0);
         const func_scalar_traits<ad::dual<double> >::result_type& y 
             = func_scalar(x);
-        DISPLAY_VAR(y._a);
-        DISPLAY_VAR(y._b);
+        DISPLAY_VAR(y.v());
+        DISPLAY_VAR(y.d());
+    }
+
+    {
+        std::cout << "ad::exp(x)" << std::endl;
+        ad::dual<double> x(3.0, 1.0);
+        const func_scalar_traits<ad::dual<double> >::result_type& y 
+            = func_scalar(ad::log(ad::exp(x)));
+        DISPLAY_VAR(y.v());
+        DISPLAY_VAR(y.d());
     }
 
     //vector: size_1
@@ -103,8 +113,8 @@ int main(int argc, char const* argv[])
         typedef typename func_vector_traits<
             ad::Vector<ad::dual<double> > >::result_type result_type;
         const result_type& y = func_vector(x);
-        DISPLAY_VAR(y(0)._a);
-        DISPLAY_VAR(y(0)._b);
+        DISPLAY_VAR(y(0).v());
+        DISPLAY_VAR(y(0).d());
     }
 
     //vector: size_1
@@ -119,12 +129,14 @@ int main(int argc, char const* argv[])
         typedef typename func_vector_traits<
             ad::Vector<ad::dual<double> > >::result_type result_type;
         const result_type& y = func_vector(x);
-        DISPLAY_VAR(y(0)._a);
-        DISPLAY_VAR(y(0)._b);
-        DISPLAY_VAR(y(1)._a);
-        DISPLAY_VAR(y(1)._b);
+        DISPLAY_VAR(y(0).v());
+        DISPLAY_VAR(y(0).d());
+        DISPLAY_VAR(y(1).v());
+        DISPLAY_VAR(y(1).d());
     }
-    
+
+    ad_test::log_test();
+
     return 0;
 }
 
