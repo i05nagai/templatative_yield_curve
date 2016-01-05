@@ -17,11 +17,11 @@ namespace ad {
 
     public:
         explicit dual() 
-            : _value(0.0), _derivative(0.0)
+            : _value(0), _derivative(0)
         {
         }
 
-        dual(const value_type& value, const value_type& derivative = 0.0) 
+        dual(const value_type& value, const value_type& derivative = 0) 
             : _value(value), _derivative(derivative)
         {
         }
