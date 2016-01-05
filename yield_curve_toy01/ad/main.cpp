@@ -28,7 +28,7 @@ typename func_scalar_traits<ad::dual<T> >::result_type
     return (x + ad::dual<T>(2.0)) * (x + ad::dual<T>(1.0));
 }
 
-//T is ad::Vector<ad::dual<value_type> >
+//T is ad::vector<ad::dual<value_type> >
 template <typename T>
 struct func_vector_traits {
 private:
@@ -50,8 +50,8 @@ public:
 
 //FROM vec<dual<T>> TO vec<dual<T>>
 template <typename T>
-typename func_vector_traits<ad::Vector<T> >::result_type 
-    func_vector(const ad::Vector<T>& x)
+typename func_vector_traits<ad::vector<T> >::result_type 
+    func_vector(const ad::vector<T>& x)
 {
     return x * x + x;
 }
@@ -59,9 +59,9 @@ typename func_vector_traits<ad::Vector<T> >::result_type
 int main(int argc, char const* argv[])
 {
     /* expression template */
-    ad::Vector<double> v1(10);
-    ad::Vector<double> v2(10);
-    ad::Vector<double> v3(10);
+    ad::vector<double> v1(10);
+    ad::vector<double> v2(10);
+    ad::vector<double> v3(10);
     for (std::size_t i = 0; i < v1.size(); ++i) {
         v1(i) = i * 0.1;
         v2(i) = i * 0.2;
@@ -69,7 +69,7 @@ int main(int argc, char const* argv[])
     }
 
     {
-        ad::Vector<double> v4 = v1 + ad::log(ad::exp(v2)) + (-v3);
+        ad::vector<double> v4 = v1 + ad::log(ad::exp(v2)) + (-v3);
         DISPLAY_VECTOR_INFOS(v1);
         DISPLAY_VECTOR_INFOS(v2);
         DISPLAY_VECTOR_INFOS(v3);
@@ -106,12 +106,12 @@ int main(int argc, char const* argv[])
     {
         typedef ad::dual<double> value_type;
         //typedef double value_type;
-        typedef ad::Vector<value_type> domain_type;
+        typedef ad::vector<value_type> domain_type;
         domain_type x(1);
         x(0) = value_type(3.0, 1.0); //bad interface
         //x(0) = value_type(3.0);
         typedef typename func_vector_traits<
-            ad::Vector<ad::dual<double> > >::result_type result_type;
+            ad::vector<ad::dual<double> > >::result_type result_type;
         const result_type& y = func_vector(x);
         DISPLAY_VAR(y(0).v());
         DISPLAY_VAR(y(0).d());
@@ -121,13 +121,13 @@ int main(int argc, char const* argv[])
     {
         typedef ad::dual<double> value_type;
         //typedef double value_type;
-        typedef ad::Vector<value_type> domain_type;
+        typedef ad::vector<value_type> domain_type;
         domain_type x(2);
         x(0) = value_type(3.0, 1.0); //bad interface
         x(1) = value_type(2.0, 1.0); //bad interface
         //x(0) = value_type(3.0);
         typedef typename func_vector_traits<
-            ad::Vector<ad::dual<double> > >::result_type result_type;
+            ad::vector<ad::dual<double> > >::result_type result_type;
         const result_type& y = func_vector(x);
         DISPLAY_VAR(y(0).v());
         DISPLAY_VAR(y(0).d());

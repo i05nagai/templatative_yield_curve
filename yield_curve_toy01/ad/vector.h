@@ -95,9 +95,9 @@ namespace ad {
     }
 
     template <typename T>
-    class Vector : public vector_expression<Vector<T> > {
+    class vector : public vector_expression<vector<T> > {
     private:
-        typedef Vector<T> self_type;
+        typedef vector<T> self_type;
     public:
         typedef T value_type;
         typedef value_type& reference;
@@ -107,13 +107,13 @@ namespace ad {
         typedef value_type* array_type;
 
     public:
-        explicit Vector(const size_type size)
+        explicit vector(const size_type size)
         : _data(new value_type[size]),_size(size)
         {
         }
 
         //copy constructer
-        Vector(const self_type& other)
+        vector(const self_type& other)
         {
             _size = other.size();
             _data = new value_type[_size];
@@ -123,10 +123,10 @@ namespace ad {
         }
 
         template <typename E>
-        Vector(const vector_expression<E>& e)
+        vector(const vector_expression<E>& e)
         {
-            //TODO:check whether value_type of E is same as the other of Vector.
-            //TODO:check whether size_type of E is same as the other of Vector.
+            //TODO:check whether value_type of E is same as the other of vector.
+            //TODO:check whether size_type of E is same as the other of vector.
             _size = e().size();
             _data = new value_type[_size];
             for (std::size_t i = 0; i < _size; ++i) {
@@ -134,7 +134,7 @@ namespace ad {
             }
         }
 
-        ~Vector()
+        ~vector()
         {
             delete[] _data;
         }
