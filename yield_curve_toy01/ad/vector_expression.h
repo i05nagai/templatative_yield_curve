@@ -6,9 +6,11 @@ namespace ad {
     class vector_expression {
     public:
         typedef E expression_type;
+        typedef typename type_traits<expression_type>::const_reference 
+            const_reference;
 
     public:
-        const expression_type& operator()() const 
+        const_reference operator()() const 
         {
             return static_cast<const expression_type&>(*this);
         }
