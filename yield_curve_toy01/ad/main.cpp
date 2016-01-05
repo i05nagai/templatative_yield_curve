@@ -76,13 +76,6 @@ int main(int argc, char const* argv[])
         DISPLAY_VECTOR_INFOS(v4);
     }
 
-    //TODO:
-    {
-        //hold v1+v2-v3 as expressoin.
-        //expression_type e =  v1 + v2 - v3;
-        //value_type v = e(0);
-    }
-
     /* automatic differentiation */
     //scalar
     {
