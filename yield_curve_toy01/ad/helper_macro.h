@@ -20,5 +20,13 @@
 #define DISPLAY_VAR(v)                                  \
     std::cout << #v ":" << v << std::endl;
 
+#define DISPLAY_DUAL(x)                                                     \
+    std::cout << #x":" << std::endl;                                        \
+    std::cout << "  value:" << x.v() << std::endl;                          \
+    for (std::size_t i = 0; i < x.d().size(); ++i) {                        \
+        std::cout << "  derivative" << i << ":" << x.d()(i) << std::endl;  \
+    }
+
+
 #endif // #ifndef AD_HELPER_MACRO_H_INCLUDED
 
