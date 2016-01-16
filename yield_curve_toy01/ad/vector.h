@@ -94,55 +94,6 @@ namespace ad {
         return expression_type(e1(), e2());
     }
 
-    /*
-    template <typename T>
-    class dual_reference {
-    private:
-        typedef dual_reference<T> self_type;
-        typedef vector<T> parent_type;
-
-    public:
-        typedef T value_type;
-        typedef type_traits<dual<T> >::reference reference;
-        typedef type_traits<T>::const_reference const_reference;
-
-        typedef const parent_type* parent_const_reference;
-
-    public:
-        vector_element_reference(
-            const_reference value,
-            parent_const_reference parent) 
-        : _value(value), _parent(parent)
-        {
-        }
-
-        reference operator()()
-        {
-            return _value;
-        }
-
-        const_reference operator()() const
-        {
-            return _value;
-        }
-
-        parent_const_reference parent() const
-        {
-            return _parent;
-        }
-
-        template <typename T2>
-        bool has_same_parent(const self_type& other)
-        {
-            return _parent == other._parent;
-        } 
-
-    private:
-        value_type _value;
-        parent_const_reference _parent;
-    };
-    */
-
     template <typename T>
     class vector : public vector_expression<vector<T> > {
     private:
