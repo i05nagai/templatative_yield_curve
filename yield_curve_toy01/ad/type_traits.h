@@ -43,9 +43,14 @@ namespace ad {
     /*
      * is_vector
      */
-    template <typename T, bool Cond = boost::is_base_of<
+    template <typename T, bool Cond = 
+        boost::is_base_of<
         vector_expression<T>, 
-        T>::value > 
+        T>::value 
+        ||
+        boost::is_base_of<
+        boost::numeric::ublas::vector_expression<T>, 
+        T>::value> 
     struct is_vector;
 
     template <typename T> 
