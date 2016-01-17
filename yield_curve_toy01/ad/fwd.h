@@ -16,7 +16,7 @@ namespace ad {
         typename exp_traits<E>::result_type exp(const E& e);
 
     //log
-    template <typename E, typename T = void> struct log_traits;
+    template <typename E> struct log_traits;
     template <typename E> 
         typename log_traits<E>::result_type log(const E& e);
 } // namespace ad {

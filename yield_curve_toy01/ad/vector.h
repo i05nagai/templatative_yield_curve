@@ -6,6 +6,7 @@
 #include "type_traits.h"
 #include "functor.h"
 #include "vector_expression.h"
+#include "helper_macro.h"
 
 namespace ad {
     /*
@@ -25,7 +26,10 @@ namespace ad {
     }
 
     /*
-     * binary operator overloading
+     * binary operator 
+     */
+    /*
+     * (v+v)[i] = v[i] + v[i] 
      */
     template <typename E1, typename E2> 
     typename vector_binary_traits<E1, E2, scalar_plus<
@@ -42,7 +46,53 @@ namespace ad {
             value2_type> >::expression_type expression_type;
         return expression_type(e1(), e2());
     }
+    /* 
+     * (t+v)[i] = t + v[i] 
+     */
+    template <typename T1, typename E2> 
+    typename vector_binary_scalar1_traits<
+        T1, 
+        E2, 
+        scalar_plus<
+            T1, 
+            typename E2::value_type> >::result_type
+        operator +(
+            const T1& e1,
+            const vector_expression<E2>& e2)
+    {
+        typedef T1 value1_type;
+        typedef typename E2::value_type value2_type;
+        typedef typename vector_binary_scalar1_traits<T1, E2, scalar_plus<
+            value1_type, 
+            value2_type> >::expression_type expression_type;
+        return expression_type(e1, e2());
+    }
+    
+    /* 
+     * (v+t)[i] = v[i] + t
+     */
+    template <typename E1, typename T2> 
+    typename vector_binary_scalar2_traits<
+        E1, 
+        T2, 
+        scalar_plus<
+            typename E1::value_type, 
+            T2> >::result_type
+         operator +(
+            const vector_expression<E1>& e1, 
+            const T2& e2)
+    {
+        typedef typename E1::value_type value1_type;
+        typedef T2 value2_type;
+        typedef typename vector_binary_scalar2_traits<E1, T2, scalar_plus<
+            value1_type, 
+            value2_type> >::expression_type expression_type;
+        return expression_type(e1(), e2);
+    }
 
+    /*
+     * (v-v)[i] = v[i] - v[i] 
+     */
     template <typename E1, typename E2> 
     typename vector_binary_traits<E1, E2, 
          scalar_minus<
@@ -60,9 +110,12 @@ namespace ad {
         return expression_type(e1(), e2());
     }
 
+    /*
+     * (v*v)[i] = v[i] * v[i] 
+     */
     template <typename E1, typename E2> 
     typename vector_binary_traits<E1, E2, scalar_mult<typename E1::value_type, typename E2::value_type> >::result_type
-         operator *(
+         element_prod (
             const vector_expression<E1>& e1, 
             const vector_expression<E2>& e2)
     {
@@ -74,7 +127,53 @@ namespace ad {
                 value2_type> >::expression_type expression_type;
         return expression_type(e1(), e2());
     }
+    /* 
+     * (t*v)[i] = t * v[i] 
+     */
+    template <typename T1, typename E2> 
+    typename vector_binary_scalar1_traits<
+        T1, 
+        E2, 
+        scalar_mult<
+            T1, 
+            typename E2::value_type> >::result_type
+        operator *(
+            const T1& e1,
+            const vector_expression<E2>& e2)
+    {
+        typedef T1 value1_type;
+        typedef typename E2::value_type value2_type;
+        typedef typename vector_binary_scalar1_traits<T1, E2, scalar_mult<
+            value1_type, 
+            value2_type> >::expression_type expression_type;
+        return expression_type(e1, e2());
+    }
+    /* 
+     * (v*t)[i] = v[i] * t
+     */
+    template <typename E1, typename T2> 
+    typename vector_binary_scalar2_traits<
+        E1, 
+        T2, 
+        scalar_mult<
+            typename E1::value_type, 
+            T2> >::result_type
+         operator *(
+            const vector_expression<E1>& e1, 
+            const T2& e2)
+    {
+        typedef typename E1::value_type value1_type;
+        typedef T2 value2_type;
+        typedef typename vector_binary_scalar2_traits<E1, T2, scalar_mult<
+            value1_type, 
+            value2_type> >::expression_type expression_type;
+        return expression_type(e1(), e2);
+    }
 
+
+    /*
+     * (v/v)[i] = v[i] / v[i] 
+     */
     template <typename E1, typename E2> 
     typename vector_binary_traits<
         E1, 
@@ -82,7 +181,7 @@ namespace ad {
         scalar_div<
             typename E1::value_type, 
             typename E2::value_type> >::result_type
-         operator /(
+         element_div (
             const vector_expression<E1>& e1, 
             const vector_expression<E2>& e2)
     {
@@ -94,6 +193,53 @@ namespace ad {
         return expression_type(e1(), e2());
     }
 
+    /* 
+     * (t/v)[i] = t / v[i] 
+     */
+    template <typename T1, typename E2> 
+    typename vector_binary_scalar1_traits<
+        T1, 
+        E2, 
+        scalar_div<
+            T1, 
+            typename E2::value_type> >::result_type
+        operator /(
+            const T1& e1,
+            const vector_expression<E2>& e2)
+    {
+        typedef T1 value1_type;
+        typedef typename E2::value_type value2_type;
+        typedef typename vector_binary_scalar1_traits<T1, E2, scalar_div<
+            value1_type, 
+            value2_type> >::expression_type expression_type;
+        return expression_type(e1, e2());
+    }
+    
+    /* 
+     * (v/t)[i] = v[i] / t
+     */
+    template <typename E1, typename T2> 
+    typename vector_binary_scalar2_traits<
+        E1, 
+        T2, 
+        scalar_div<
+            typename E1::value_type, 
+            T2> >::result_type
+         operator /(
+            const vector_expression<E1>& e1, 
+            const T2& e2)
+    {
+        typedef typename E1::value_type value1_type;
+        typedef T2 value2_type;
+        typedef typename vector_binary_scalar2_traits<E1, T2, scalar_div<
+            value1_type, 
+            value2_type> >::expression_type expression_type;
+        return expression_type(e1(), e2);
+    }
+
+    /*
+     * vector class
+     */
     template <typename T>
     class vector : public vector_expression<vector<T> > {
     private:

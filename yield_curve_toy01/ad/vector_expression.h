@@ -114,6 +114,95 @@ namespace ad {
         typedef expression_type result_type;
     };
 
+
+    /*
+     * scalar op vector
+     */
+    template <typename E1, typename E2, typename Op>
+    class vector_binary_scalar1 : 
+        public vector_expression<vector_binary_scalar1<E1, E2, Op> > {
+    private:
+        typedef vector_binary_scalar1<E1, E2, Op> self_type;
+    public:
+        typedef E1 expression1_type;
+        typedef E2 expression2_type;
+        typedef const E1& expression1_closure_type;
+        typedef typename E2::const_closure_type expression2_closure_type;
+        typedef typename E2::size_type size_type;
+        typedef typename E2::value_type value_type;
+        typedef value_type const_reference;
+        typedef const self_type& const_closure_type;
+    public:
+        vector_binary_scalar1(const expression1_type& e1, const expression2_type& e2)
+        : _e1(e1), _e2(e2)
+        {
+        }
+
+        const_reference operator()(const size_type i) const
+        {
+            return Op::apply(_e1, _e2(i));
+        }
+
+        size_type size() const
+        {
+            return _e2.size();
+        }
+
+    private:
+        expression1_closure_type _e1;
+        expression2_closure_type _e2;
+    };
+
+    template <typename E1, typename E2, typename Op>
+    struct vector_binary_scalar1_traits {
+        typedef vector_binary_scalar1<E1, E2, Op> expression_type;
+        typedef expression_type result_type;
+    };
+
+    /*
+     * case: vector Op scalar
+     */
+    template <typename E1, typename E2, typename Op>
+    class vector_binary_scalar2 : 
+        public vector_expression<vector_binary_scalar2<E1, E2, Op> > {
+    private:
+        typedef vector_binary_scalar2<E1, E2, Op> self_type;
+    public:
+        typedef E1 expression1_type;
+        typedef E2 expression2_type;
+        typedef typename E1::const_closure_type expression1_closure_type;
+        typedef const E2& expression2_closure_type;
+        typedef typename E1::size_type size_type;
+        typedef typename E1::value_type value_type;
+        typedef value_type const_reference;
+        typedef const self_type& const_closure_type;
+    public:
+        vector_binary_scalar2(const expression1_type& e1, const expression2_type& e2)
+        : _e1(e1), _e2(e2)
+        {
+        }
+
+        const_reference operator()(const size_type i) const
+        {
+            return Op::apply(_e1(i), _e2);
+        }
+
+        size_type size() const
+        {
+            return _e1.size();
+        }
+
+    private:
+        expression1_closure_type _e1;
+        expression2_closure_type _e2;
+    };
+
+    template <typename E1, typename E2, typename Op>
+    struct vector_binary_scalar2_traits {
+        typedef vector_binary_scalar2<E1, E2, Op> expression_type;
+        typedef expression_type result_type;
+    };
+
 } // namespace ad {
 
 #endif // #ifndef AD_VECTOR_EXPRESSION_H_INCLUDED

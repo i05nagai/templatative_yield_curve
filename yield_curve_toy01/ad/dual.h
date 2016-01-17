@@ -3,6 +3,7 @@
 
 #include "helper_macro.h"
 #include "type_traits.h"
+#include "vector_expression.h"
 
 #include <boost/static_assert.hpp>
 #include <boost/numeric/ublas/vector.hpp>
@@ -26,6 +27,14 @@ namespace ad {
         explicit dual_vector(const size_type size)
         : _data(new value_type[size]),_size(size)
         {
+        }
+
+        explicit dual_vector(const size_type size, const T& value)
+        : _data(new value_type[size]),_size(size)
+        {
+            for (std::size_t i = 0; i < size; ++i) {
+                _data[i] = value;
+            }
         }
 
         //copy constructer
@@ -112,7 +121,7 @@ namespace ad {
     template <typename T, int N>
     struct derivative_type_traits {
     public:
-        typedef boost::numeric::ublas::vector<T> type;
+        typedef dual_vector<T> type;
         typedef typename type_traits<T>::const_reference result_type;
     public:
         static result_type apply(const T& d, const int n) {
@@ -126,7 +135,7 @@ namespace ad {
         BOOST_STATIC_ASSERT((N > 0));
     private:
         typedef dual<T, N> self_type;
-        typedef ublas::vector<T> derivative_type;
+        typedef dual_vector<T> derivative_type;
     public:
         typedef T value_type;
         typedef typename type_traits<value_type>::reference reference;
@@ -155,7 +164,7 @@ namespace ad {
         template<typename E>
         dual(
             const value_type& value, 
-            const ublas::vector_expression<E>& derivative) 
+            const vector_expression<E>& derivative) 
         : _value(value), _derivative(derivative)
         {
         }

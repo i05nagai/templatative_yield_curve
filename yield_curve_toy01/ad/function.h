@@ -65,51 +65,6 @@ namespace ad {
     struct exp_traits : public dual_exp_traits<E> {
     };
 
-
-    /*
-    template <typename E, typename T>
-    struct exp_traits {
-    private:
-        typedef E value_type;
-    public:
-        typedef value_type result_type;
-        static result_type apply(const E& e)
-        {
-            return std::exp(e);
-        }
-    };
-
-    
-    template <typename E>
-    struct exp_traits<dual<E> > {
-    private:
-    public:
-        typedef E value_type;
-        typedef dual<E> result_type;
-    public:
-        static result_type apply(const dual<E>& e)
-        {
-            return result_type(std::exp(e.v()), e.d() * std::exp(e.v()));
-        }
-    };
-
-    template <typename E>
-    struct exp_traits<E,
-        typename boost::enable_if< 
-            boost::is_base_of<vector_expression<E>, E> >::type> {
-    private:
-        
-        typedef scalar_exp<value_type> functor_type;
-    public:
-        typedef typename vector_unary_traits<E, functor_type>::result_type
-            result_type;
-        static result_type apply(const vector_expression<E>& e)
-        {
-            return result_type(e());
-        }
-    };
-    */
-
     template <typename E>
     typename exp_traits<E>::result_type exp(const E& e)
     {
@@ -120,6 +75,66 @@ namespace ad {
     /*
      * logarithmic function.
      */
+    template <typename E, bool Cond = is_vector<E>::value>
+    struct vector_log_traits;
+
+    template <typename E> 
+    struct vector_log_traits<E, true> {
+    public:
+        typedef typename E::value_type value_type;
+        typedef scalar_log<value_type> functor_type;
+        typedef typename vector_unary_traits<E, functor_type>::result_type
+            result_type;
+    public:
+        static result_type apply(const vector_expression<E>& e)
+        {
+            return result_type(e());
+        }
+    };
+
+    template <typename E> 
+    struct vector_log_traits<E, false> {
+    private:
+        typedef E value_type;
+    public:
+        typedef value_type result_type;
+        static result_type apply(const E& e)
+        {
+            return std::log(e);
+        }
+    };
+
+    template <typename E, bool Cond = is_dual<E>::value>
+    struct dual_log_traits;
+    
+    //dual
+    template <typename E>
+    struct dual_log_traits<E, true> {
+    public:
+        typedef typename E::value_type value_type;
+        typedef dual<value_type, E::size_value> result_type;
+    public:
+        static result_type apply(const E& e)
+        {
+            return result_type(ad::log(e.v()), e.d() * ad::log(e.v()));
+        }
+    };
+
+    template <typename E>
+    struct dual_log_traits<E, false> : public vector_log_traits<E> {
+    };
+
+    template <typename E> 
+    struct log_traits : public dual_log_traits<E> {
+    };
+
+    template <typename E>
+    typename log_traits<E>::result_type log(const E& e)
+    {
+        typedef log_traits<E> Tr;
+        return Tr::apply(e);
+    }
+    /*
     template <typename E, typename T>
     struct log_traits {
     private:
@@ -166,6 +181,7 @@ namespace ad {
         typedef log_traits<E> Tr;
         return Tr::apply(e);
     }
+    */
 
 } // namespace ad {
 
