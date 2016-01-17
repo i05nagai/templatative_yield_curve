@@ -8,10 +8,10 @@ namespace ad {
 
     template <typename E> class vector_expression;
 
-    template <typename T> class dual;
+    template <typename T, int N = 1> class dual;
 
     //exp
-    template <typename E, typename T = void> struct exp_traits;
+    template <typename E> struct exp_traits;
     template <typename E> 
         typename exp_traits<E>::result_type exp(const E& e);
 
