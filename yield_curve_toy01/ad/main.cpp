@@ -14,9 +14,9 @@
 
 int main(int argc, char const* argv[])
 {
-    ad_test::dual_test();
     ad_test::exp_test();
     ad_test::log_test();
+    ad_test::dual_test();
 
 
 //    ad_test::log_test();

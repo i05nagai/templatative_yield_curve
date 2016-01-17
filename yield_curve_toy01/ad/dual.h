@@ -4,15 +4,16 @@
 #include "helper_macro.h"
 #include "type_traits.h"
 #include "vector_expression.h"
+#include "vector.h"
 
 #include <boost/static_assert.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 
 namespace ad {
     namespace ublas = boost::numeric::ublas;
-
+    
     template <typename T>
-    class dual_vector : public vector_expression<vector<T> > {
+    class dual_vector : public vector_expression<dual_vector<T> > {
     private:
         typedef dual_vector<T> self_type;
     public:
@@ -65,11 +66,34 @@ namespace ad {
             delete[] _data;
         }
 
+
+        //equal operator
+        bool operator ==(const self_type& other) const
+        {
+            //same size
+            if (size() != other.size()) {
+                return false;
+            }
+            //same contents
+            for (std::size_t i = 0; i < size(); ++i) {
+                if (other(i) != _data[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //not equal operator
+        bool operator !=(const self_type& other) const
+        {
+            return !(*this == other);
+        }
+
         //asign operator
         self_type& operator =(const self_type& other)
         {
             //not self asignment
-            if (this != other) {
+            if (*this != other) {
                 self_type v(other);
                 swap(v);
             }
@@ -99,6 +123,13 @@ namespace ad {
                 const value_type temp = other._data[i];
                 other._data[i] = _data[i];
                 _data[i] = temp;
+            }
+        }
+
+        void clear()
+        {
+            for (std::size_t i = 0; i < size(); ++i) {
+                _data[i] = 0;
             }
         }
 
@@ -132,7 +163,7 @@ namespace ad {
 
     template <typename T, int N>
     class dual {
-        BOOST_STATIC_ASSERT((N > 0));
+    BOOST_STATIC_ASSERT((N > 0));
     private:
         typedef dual<T, N> self_type;
         typedef dual_vector<T> derivative_type;
@@ -148,7 +179,13 @@ namespace ad {
                 const_derivative_reference;
 
         static const int size_value = N;
-        
+    public:
+        static self_type unit_dual(const std::size_t i)
+        {
+            assert(0 <= i);
+            assert(i < N);
+            return self_type(0.0, i);
+        }
     public:
         explicit dual() 
         : _value(0), _derivative(N, 0)
@@ -160,6 +197,14 @@ namespace ad {
         {
         }
 
+        dual(
+            const value_type& value, 
+            const std::size_t index) 
+        :_value(value), _derivative(N, 0)
+        {
+            this->setIndex(index);
+        }
+
         //TODO:need to check derivative_type is same size.
         template<typename E>
         dual(
@@ -167,6 +212,14 @@ namespace ad {
             const vector_expression<E>& derivative) 
         : _value(value), _derivative(derivative)
         {
+        }
+
+        void setIndex(const std::size_t i)
+        {
+            assert(0 <= i);
+            assert(i < N);
+            _derivative.clear();
+            _derivative(i) = 1;
         }
 
         reference v() 
@@ -230,56 +283,56 @@ namespace ad {
             (x.d() * y.v() - x.v() * y.d()) / (y.v() * y.v()));
     }
 
-    // dual<double> = dual<double> + double(constant)
-    template<typename E, int N>
-    dual<E, N> operator +(const dual<E, N>& x, const E& y)
+    // dual<double> = dual<double> + double
+    template<typename T, typename E, int N>
+    dual<E, N> operator +(const dual<E, N>& x, const T& y)
     {
-        return dual<E, N>(x.v() + y, x.d());
+        return x + dual<T, N>(y);
     }
     // dual<double> =  double(constant) + dual<double>
-    template<typename E, int N>
-    dual<E, N> operator +(const E& x, const dual<E, N>& y)
+    template<typename T, typename E, int N>
+    dual<E, N> operator +(const T& x, const dual<E, N>& y)
     {
-        return dual<E, N>(x + y.v(), y.d());
+        return dual<T, N>(x) + y;
     }
 
     // dual<double> = dual<double> - double(constant)
-    template<typename E, int N>
-    dual<E, N> operator -(const dual<E, N>& x, const E& y)
+    template<typename T, typename E, int N>
+    dual<E, N> operator -(const dual<E, N>& x, const T& y)
     {
-        return dual<E, N>(x.v() - y, x.d());
+        return x - dual<T, N>(y);
     }
     // dual<double> =  double(constant) - dual<double>
-    template<typename E, int N>
-    dual<E, N> operator -(const E& x, const dual<E, N>& y)
+    template<typename T, typename E, int N>
+    dual<E, N> operator -(const T& x, const dual<E, N>& y)
     {
-        return dual<E, N>(x - y.v(), y.d());
+        return dual<T, N>(x) - y;
     }
 
     // dual<double> = dual<double> * double(constant)
-    template<typename E, int N>
-    dual<E, N> operator *(const dual<E, N>& x, const E& y)
+    template<typename T, typename E, int N>
+    dual<E, N> operator *(const dual<E, N>& x, const T& y)
     {
-        return dual<E, N>(x.v() * y, x.d());
+        return x * dual<T, N>(y);
     }
     // dual<double> =  double(constant) * dual<double>
-    template<typename E, int N>
-    dual<E, N> operator *(const E& x, const dual<E, N>& y)
+    template<typename T, typename E, int N>
+    dual<E, N> operator *(const T& x, const dual<E, N>& y)
     {
-        return dual<E, N>(x * y.v(), y.d());
+        return dual<T, N>(x) * y;
     }
 
     // dual<double> = dual<double> / double(constant)
-    template<typename E, int N>
-    dual<E, N> operator /(const dual<E, N>& x, const E& y)
+    template<typename T, typename E, int N>
+    dual<E, N> operator /(const dual<E, N>& x, const T& y)
     {
-        return dual<E, N>(x.v() / y, x.d());
+        return x / dual<T, N>(y);
     }
     // dual<double> =  double(constant) / dual<double>
-    template<typename E, int N>
-    dual<E, N> operator /(const E& x, const dual<E, N>& y)
+    template<typename T, typename E, int N>
+    dual<E, N> operator /(const T& x, const dual<E, N>& y)
     {
-        return dual<E, N>(x / y.v(), y.d());
+        return dual<E, N>(x) / y;
     }
 
 } // namespace ad {

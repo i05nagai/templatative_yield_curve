@@ -46,49 +46,6 @@ namespace ad {
             value2_type> >::expression_type expression_type;
         return expression_type(e1(), e2());
     }
-    /* 
-     * (t+v)[i] = t + v[i] 
-     */
-    template <typename T1, typename E2> 
-    typename vector_binary_scalar1_traits<
-        T1, 
-        E2, 
-        scalar_plus<
-            T1, 
-            typename E2::value_type> >::result_type
-        operator +(
-            const T1& e1,
-            const vector_expression<E2>& e2)
-    {
-        typedef T1 value1_type;
-        typedef typename E2::value_type value2_type;
-        typedef typename vector_binary_scalar1_traits<T1, E2, scalar_plus<
-            value1_type, 
-            value2_type> >::expression_type expression_type;
-        return expression_type(e1, e2());
-    }
-    
-    /* 
-     * (v+t)[i] = v[i] + t
-     */
-    template <typename E1, typename T2> 
-    typename vector_binary_scalar2_traits<
-        E1, 
-        T2, 
-        scalar_plus<
-            typename E1::value_type, 
-            T2> >::result_type
-         operator +(
-            const vector_expression<E1>& e1, 
-            const T2& e2)
-    {
-        typedef typename E1::value_type value1_type;
-        typedef T2 value2_type;
-        typedef typename vector_binary_scalar2_traits<E1, T2, scalar_plus<
-            value1_type, 
-            value2_type> >::expression_type expression_type;
-        return expression_type(e1(), e2);
-    }
 
     /*
      * (v-v)[i] = v[i] - v[i] 
@@ -194,28 +151,6 @@ namespace ad {
     }
 
     /* 
-     * (t/v)[i] = t / v[i] 
-     */
-    template <typename T1, typename E2> 
-    typename vector_binary_scalar1_traits<
-        T1, 
-        E2, 
-        scalar_div<
-            T1, 
-            typename E2::value_type> >::result_type
-        operator /(
-            const T1& e1,
-            const vector_expression<E2>& e2)
-    {
-        typedef T1 value1_type;
-        typedef typename E2::value_type value2_type;
-        typedef typename vector_binary_scalar1_traits<T1, E2, scalar_div<
-            value1_type, 
-            value2_type> >::expression_type expression_type;
-        return expression_type(e1, e2());
-    }
-    
-    /* 
      * (v/t)[i] = v[i] / t
      */
     template <typename E1, typename T2> 
@@ -289,7 +224,7 @@ namespace ad {
         self_type& operator =(const self_type& other)
         {
             //not self asignment
-            if (this != other) {
+            if (*this != other) {
                 self_type v(other);
                 swap(v);
             }
