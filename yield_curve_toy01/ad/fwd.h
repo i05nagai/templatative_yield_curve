@@ -13,12 +13,16 @@ namespace ad {
     //exp
     template <typename E> struct exp_traits;
     template <typename E> 
-        typename exp_traits<E>::result_type exp(const E& e);
+        typename exp_traits<E>::result_type exp(
+            const E& e, 
+            typename boost::enable_if<boost::is_arithmetic<E> >::type* = NULL);
 
     //log
     template <typename E> struct log_traits;
     template <typename E> 
-        typename log_traits<E>::result_type log(const E& e);
+        typename log_traits<E>::result_type log(
+            const E& e,
+            typename boost::enable_if<boost::is_arithmetic<E> >::type* = NULL);
 } // namespace ad {
 
 #endif // #ifndef AD_FWD_H_INCLUDED

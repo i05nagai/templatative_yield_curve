@@ -127,7 +127,6 @@ namespace ad {
         return expression_type(e1(), e2);
     }
 
-
     /*
      * (v/v)[i] = v[i] / v[i] 
      */

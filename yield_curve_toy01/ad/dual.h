@@ -12,6 +12,19 @@
 namespace ad {
     namespace ublas = boost::numeric::ublas;
     
+    template <typename E> 
+    class dual_expression {
+    public:
+        typedef E expression_type;
+        typedef typename type_traits<expression_type>::const_reference 
+            const_reference;
+    public:
+        const_reference operator()() const 
+        {
+            return static_cast<const expression_type&>(*this);
+        }
+    };
+
     template <typename T>
     class dual_vector : public vector_expression<dual_vector<T> > {
     private:
@@ -162,7 +175,7 @@ namespace ad {
 
 
     template <typename T, int N>
-    class dual {
+    class dual : public dual_expression<dual<T,N> >{
     BOOST_STATIC_ASSERT((N > 0));
     private:
         typedef dual<T, N> self_type;
