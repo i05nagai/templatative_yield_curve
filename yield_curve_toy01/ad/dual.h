@@ -163,7 +163,7 @@ namespace ad {
 
 
     template <typename T, int N>
-    struct derivative_type_traits {
+    struct infinitesmal_type_traits {
     public:
         typedef dual_vector<T> type;
         typedef typename type_traits<T>::const_reference result_type;
@@ -179,17 +179,17 @@ namespace ad {
     BOOST_STATIC_ASSERT((N > 0));
     private:
         typedef dual<T, N> self_type;
-        typedef dual_vector<T> derivative_type;
+        typedef dual_vector<T> infinitesmal_type;
     public:
         typedef T value_type;
         typedef typename type_traits<value_type>::reference reference;
         typedef typename type_traits<value_type>::const_reference
             const_reference;
-        typedef typename type_traits<derivative_type>::reference 
-            derivative_reference;
+        typedef typename type_traits<infinitesmal_type>::reference 
+            infinitesmal_reference;
         typedef 
-            typename type_traits<derivative_type>::const_reference 
-                const_derivative_reference;
+            typename type_traits<infinitesmal_type>::const_reference 
+                const_infinitesmal_reference;
 
         static const int size_value = N;
     public:
@@ -201,29 +201,29 @@ namespace ad {
         }
     public:
         explicit dual() 
-        : _value(0), _derivative(N, 0)
+        : _value(0), _infinitesmal(N, 0)
         {
         }
 
         dual(const value_type& value) 
-        : _value(value), _derivative(N, 0)
+        : _value(value), _infinitesmal(N, 0)
         {
         }
 
         dual(
             const value_type& value, 
             const std::size_t index) 
-        :_value(value), _derivative(N, 0)
+        :_value(value), _infinitesmal(N, 0)
         {
             this->setIndex(index);
         }
 
-        //TODO:need to check derivative_type is same size.
+        //TODO:need to check infinitesmal_type is same size.
         template<typename E>
         dual(
             const value_type& value, 
-            const vector_expression<E>& derivative) 
-        : _value(value), _derivative(derivative)
+            const vector_expression<E>& infinitesmal) 
+        : _value(value), _infinitesmal(infinitesmal)
         {
         }
 
@@ -231,8 +231,8 @@ namespace ad {
         {
             assert(0 <= i);
             assert(i < N);
-            _derivative.clear();
-            _derivative(i) = 1;
+            _infinitesmal.clear();
+            _infinitesmal(i) = 1;
         }
 
         reference v() 
@@ -245,19 +245,19 @@ namespace ad {
             return _value;
         }
 
-        derivative_reference d()
+        infinitesmal_reference d()
         {
-            return _derivative;
+            return _infinitesmal;
         }
 
-        const_derivative_reference d() const 
+        const_infinitesmal_reference d() const 
         {
-            return _derivative;
+            return _infinitesmal;
         }
 
     private:
         value_type _value;
-        derivative_type _derivative;
+        infinitesmal_type _infinitesmal;
     };
 
     template<typename E1, typename E2, int N>
