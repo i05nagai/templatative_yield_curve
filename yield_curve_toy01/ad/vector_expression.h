@@ -1,9 +1,13 @@
 #ifndef AD_VECTOR_EXPRESSION_H_INCLUDED
 #define AD_VECTOR_EXPRESSION_H_INCLUDED
 
+#include <boost/numeric/ublas/expression_types.hpp>
+
 namespace ad {
+    namespace ublas = boost::numeric::ublas;
     template <typename E> 
-    class vector_expression {
+    class vector_expression : 
+        ublas::vector_expression<vector_expression<E> > {
     public:
         typedef E expression_type;
         typedef typename type_traits<expression_type>::const_reference 
