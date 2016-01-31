@@ -56,13 +56,6 @@ namespace ad {
 
         static const int size_value = N;
     public:
-        static self_type unit_dual(const std::size_t i)
-        {
-            assert(0 <= i);
-            assert(i < N);
-            return self_type(0.0, i);
-        }
-    public:
         explicit dual() 
         : _value(0), _infinitesmal(N, 0)
         {
@@ -73,14 +66,6 @@ namespace ad {
         {
         }
 
-        dual(
-            const value_type& value, 
-            const std::size_t index) 
-        :_value(value), _infinitesmal(N, 0)
-        {
-            this->setIndex(index);
-        }
-
         //TODO:need to check infinitesmal_type is same size.
         template<typename E>
         dual(
@@ -88,14 +73,6 @@ namespace ad {
             const ublas::vector_expression<E>& infinitesmal) 
         : _value(value), _infinitesmal(infinitesmal)
         {
-        }
-
-        void setIndex(const std::size_t i)
-        {
-            assert(0 <= i);
-            assert(i < N);
-            _infinitesmal.clear();
-            _infinitesmal(i) = 1;
         }
 
         reference v() 
