@@ -1,7 +1,7 @@
 #ifndef AD_TEST_EXP_TEST_H_INCLUDED
 #define AD_TEST_EXP_TEST_H_INCLUDED
 namespace ad_test {
-    
+    namespace ublas = boost::numeric::ublas;
     bool exp_test() {
         std::cout << "---------start-------" << std::endl;
 
@@ -30,9 +30,9 @@ namespace ad_test {
 
         //case: dual(size=2)
         {
-            ad::dual_vector<double> dx(2, 0.0);
+            ublas::vector<double> dx(2, 0.0);
             dx(0) = 1.0;
-            ad::dual_vector<double> dz(2, 0.0);
+            ublas::vector<double> dz(2, 0.0);
             dz(1) = 1.0;
             const ad::dual<double, 2> x(std::log(1.0));
             const double c = 3.0;

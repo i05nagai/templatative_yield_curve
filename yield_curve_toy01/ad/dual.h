@@ -25,147 +25,10 @@ namespace ad {
         }
     };
 
-    template <typename T>
-    class dual_vector : public vector_expression<dual_vector<T> > {
-    private:
-        typedef dual_vector<T> self_type;
-    public:
-        typedef T value_type;
-        typedef value_type& reference;
-        typedef const value_type& const_reference;
-        typedef std::size_t size_type;
-        typedef const self_type& const_closure_type;
-        typedef value_type* array_type;
-
-    public:
-        explicit dual_vector(const size_type size)
-        : _data(new value_type[size]),_size(size)
-        {
-        }
-
-        explicit dual_vector(const size_type size, const T& value)
-        : _data(new value_type[size]),_size(size)
-        {
-            for (std::size_t i = 0; i < size; ++i) {
-                _data[i] = value;
-            }
-        }
-
-        //copy constructer
-        dual_vector(const self_type& other)
-        {
-            _size = other.size();
-            _data = new value_type[_size];
-            for (std::size_t i = 0; i < _size; ++i) {
-                _data[i] =other._data[i];
-            }
-        }
-
-        template <typename E>
-        dual_vector(const vector_expression<E>& e)
-        {
-            //TODO:check whether value_type of E is same as the other of vector.
-            //TODO:check whether size_type of E is same as the other of vector.
-            _size = e().size();
-            _data = new value_type[_size];
-            for (std::size_t i = 0; i < _size; ++i) {
-                _data[i] = e()(i);
-            }
-        }
-
-        ~dual_vector()
-        {
-            //TODO: delete_array
-            delete[] _data;
-        }
-
-
-        //equal operator
-        bool operator ==(const self_type& other) const
-        {
-            //same size
-            if (size() != other.size()) {
-                return false;
-            }
-            //same contents
-            for (std::size_t i = 0; i < size(); ++i) {
-                if (other(i) != _data[i]) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        //not equal operator
-        bool operator !=(const self_type& other) const
-        {
-            return !(*this == other);
-        }
-
-        //asign operator
-        self_type& operator =(const self_type& other)
-        {
-            //not self asignment
-            if (*this != other) {
-                self_type v(other);
-                swap(v);
-            }
-            return *this;
-        }
-
-        reference operator()(const size_type i)
-        {
-            return _data[i];
-        }
-
-        const_reference operator()(const size_type i) const
-        {
-            return _data[i];
-        }
-
-        size_type size() const
-        {
-            return _size;
-        }
-
-        void swap(self_type& other)
-        {
-            assert(other.size() == size());
-            //T must have a correct asignment operator.
-            for (std::size_t i = 0; i < other.size(); ++i) {
-                const value_type temp = other._data[i];
-                other._data[i] = _data[i];
-                _data[i] = temp;
-            }
-        }
-
-        void clear()
-        {
-            for (std::size_t i = 0; i < size(); ++i) {
-                _data[i] = 0;
-            }
-        }
-
-        array_type& data() 
-        {
-            return _data;
-        }
-
-        const array_type& data() const
-        {
-            return _data;
-        }
-
-    private:
-       array_type _data;
-       size_type _size;
-    };
-
-
     template <typename T, int N>
     struct infinitesmal_type_traits {
     public:
-        typedef dual_vector<T> type;
+        typedef ublas::vector<T> type;
         typedef typename type_traits<T>::const_reference result_type;
     public:
         static result_type apply(const T& d, const int n) {
@@ -175,11 +38,11 @@ namespace ad {
 
 
     template <typename T, int N>
-    class dual : public dual_expression<dual<T,N> >{
+    class dual : public dual_expression<dual<T,N> > {
     BOOST_STATIC_ASSERT((N > 0));
     private:
         typedef dual<T, N> self_type;
-        typedef dual_vector<T> infinitesmal_type;
+        typedef ublas::vector<T> infinitesmal_type;
     public:
         typedef T value_type;
         typedef typename type_traits<value_type>::reference reference;
@@ -222,7 +85,7 @@ namespace ad {
         template<typename E>
         dual(
             const value_type& value, 
-            const vector_expression<E>& infinitesmal) 
+            const ublas::vector_expression<E>& infinitesmal) 
         : _value(value), _infinitesmal(infinitesmal)
         {
         }
