@@ -137,6 +137,7 @@ namespace ad {
     }
 
     // dual<double> = dual<double> + double
+    // T is not dual, not vector, arithmetic.
     template<typename T, typename E, int N>
     dual<E, N> operator +(const dual<E, N>& x, const T& y)
     {
