@@ -6,14 +6,18 @@ INC_FLAGS+=-I.
 TEST_TARGET=main.exe
 
 SOURCES=yc/date/Date.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-TEST_SOURCES=yc_test/main.cpp
-TEST_OBJECTS=$(TEST_SOURCES:.cpp=.o)
 HEADERS=yc/date/Date.h
 HEADERS+=yc/date/business_day_convention.h
 HEADERS+=yc/date/business_center.h
+HEADERS+=yc/curve/curve.h
+HEADERS+=yc/curve/interpolator.h
+HEADERS+=yc/curve/fwd.h
+TEST_SOURCES=yc_test/main.cpp
 TEST_HEADERS=yc_test/date/DateTest.h
 TEST_HEADERS+=yc_test/date/jptk_calendar_test.h
+TEST_HEADERS+=yc_test/curve/curve_test.h
+OBJECTS=$(SOURCES:.cpp=.o)
+TEST_OBJECTS=$(TEST_SOURCES:.cpp=.o)
 
 #suffix rule
 .SUFFIXES: .cpp .o
