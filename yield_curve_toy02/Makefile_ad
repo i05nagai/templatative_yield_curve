@@ -1,0 +1,35 @@
+
+#LIB=
+INC_FLAGS=-IC:/Users/admin/Documents/Programming/cpp/libraries/boost_1_40_0
+INC_FLAGS+=-I.
+TEST_TARGET=ad_test.exe
+
+HEADERS=ad/dual.h
+HEADERS+=ad/function.h
+HEADERS+=ad/functor.h
+HEADERS+=ad/helper_macro.h
+HEADERS+=ad/type_traits.h
+HEADERS+=ad/vector.h
+HEADERS+=ad/vector_expression.h
+TEST_SOURCES=ad_test/main.cpp
+TEST_HEADERS=ad_test/automatic_differentiation_test.h
+TEST_HEADERS+=ad_test/dual_test.h
+TEST_HEADERS+=ad_test/exp_test.h
+TEST_HEADERS+=ad_test/expression_template_test.h
+TEST_HEADERS+=ad_test/log_test.h
+TEST_HEADERS+=ad_test/vector_dual_test.h
+OBJECTS=$(SOURCES:.cpp=.o)
+TEST_OBJECTS=$(TEST_SOURCES:.cpp=.o)
+
+#suffix rule
+.SUFFIXES: .cpp .o
+.cpp.o:	
+	$(CXX) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
+
+#make rule
+$(TEST_TARGET): $(HEADERS) $(SOURCES) $(TEST_SOURCES) $(TEST_HEADERS) $(OBJECTS) $(TEST_OBJECTS)
+	$(CXX) -o $@ $(INC_FLAGS) $(OBJECTS) $(TEST_OBJECTS) $(CFLAGS)
+
+clean:
+	rm -f $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS)
+
