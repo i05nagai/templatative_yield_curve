@@ -53,24 +53,11 @@ namespace ad {
      */
 
     /*
-     *
+     * functors
      */
-    //(f1, f2,.., fn)(v) -> (f1(v), ..., fn(v))
-    template <typename T>
-    class unary_vector_functor {
-    public:
-        typedef typename type_traits<T>::const_reference argument_type;
-        typedef T result_type;
-
-        static result_type apply(argument_type v)
-        {
-            return v;
-        }
-    };
-
-    // vector -> vector
+    // R^n -> R^2
     template <typename F1, typename F2>
-    struct functor2 {
+    class functor2 {
     private:
         typedef typename F1::value_type value1_type;
         typedef typename F2::value_type value2_type;
@@ -79,11 +66,13 @@ namespace ad {
     public:
         typedef F1 function1_type;
         typedef F2 function2_type;
-        typedef typename ad::promote_traits<
+        typedef typename promote_traits<
             value1_type, value2_type>::type value_type;
-        typedef typename ad::promote_traits<
+        typedef typename promote_traits<
             result1_type, result2_type>::type result_value_type;
-        typedef typename ublas::vector<result_value_type> result_type;
+        //TODO: need to consider value_type is scalar(e.g. double)
+        typedef typename value_type::value_type element_type;
+        typedef ublas::vector<element_type> result_type;
     public:
         functor2(const function1_type& f1, const function2_type& f2)
         : _f1(f1), _f2(f2)
@@ -93,7 +82,10 @@ namespace ad {
         result_type operator()(
             const value_type& x)
         {
-            return result_type(_f1(x), _f2(x));
+            result_type y(2);
+            y[0] = _f1(x);
+            y[1] = _f2(x);
+            return y;
         }
 
     private:
