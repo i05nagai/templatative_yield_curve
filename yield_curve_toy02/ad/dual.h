@@ -7,6 +7,7 @@
 #include "vector.h"
 
 #include <boost/static_assert.hpp>
+#include <boost/mpl/and.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 
 namespace ad {
@@ -25,29 +26,53 @@ namespace ad {
         }
     };
 
-    template <typename T, int N>
-    struct infinitesmal_type_traits {
+    //scalar dual
+    template <typename T, bool Cond = is_dual<T>::value >
+    struct scalar_dual_traits;
+
+    //vector<dual>
+    template <typename T, bool Cond = boost::mpl::and_<
+        is_vector<T>, is_dual<typename T::value_type> >::value >
+    struct vector_dual_traits;
+
+    template <typename T>
+    struct scalar_dual_traits<T, true> {
     public:
-        typedef ublas::vector<T> type;
-        typedef typename type_traits<T>::const_reference result_type;
+        typedef typename T::infinitesmal_type value_type;
+        typedef ublas::vector<value_type> result_type;
     public:
-        static result_type apply(const T& d, const int n) {
-            return d;
+        //d
+        static result_type d(const T& d) {
+            return d.d();
         }
     };
 
+    template <typename T>
+    struct vector_dual_traits<T, false> : scalar_dual_traits<T> {
+    };
+
+    template <typename T>
+    struct vector_dual_traits<T, true> {
+    public:
+        typedef typename T::value_type value_type;
+        typedef ublas::matrix<value_type> result_type;
+    public:
+        static result_type apply(const T& d) {
+            return d;
+        }
+    };
 
     template <typename T, int N>
     class dual : public dual_expression<dual<T,N> > {
     BOOST_STATIC_ASSERT((N > 0));
     private:
         typedef dual<T, N> self_type;
-        typedef ublas::vector<T> infinitesmal_type;
     public:
         typedef T value_type;
         typedef typename type_traits<value_type>::reference reference;
         typedef typename type_traits<value_type>::const_reference
             const_reference;
+        typedef ublas::vector<T> infinitesmal_type;
         typedef typename type_traits<infinitesmal_type>::reference 
             infinitesmal_reference;
         typedef 
