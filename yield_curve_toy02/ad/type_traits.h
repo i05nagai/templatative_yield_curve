@@ -27,10 +27,66 @@ namespace ad {
     };
 
     /*
+     * is_vector
+     */
+    template <typename T, bool Cond = boost::is_base_of<
+        boost::numeric::ublas::vector_expression<T>, T>::value> 
+    struct is_vector;
+
+    template <typename T> 
+    struct is_vector<T, false> {
+        typedef T type;
+        static const bool value = false;
+    };
+
+    template <typename T>
+    struct is_vector<T, true> {
+        typedef T type;
+        static const bool value = true;
+    };
+
+    /*
      * is_dual
      */
+    //scalar dual
     template <typename T, bool Cond 
         = boost::is_base_of<dual_expression<T>, T>::value> 
+    struct is_scalar_dual; 
+
+    template <typename T>
+    struct is_scalar_dual<T, false> {
+        typedef T type;
+        static const bool value = false;
+    };
+
+    template <typename T> 
+    struct is_scalar_dual<T, true> {
+        typedef T type;
+        static const bool value = true;
+    };
+    //vector dual
+    template <typename T, bool Cond 
+        = boost::mpl::and_<
+            is_vector<T>,
+            is_scalar_dual<typename T::value_type> >::value>
+    struct is_vector_dual; 
+
+    template <typename T>
+    struct is_vector_dual<T, false> {
+        typedef T type;
+        static const bool value = false;
+    };
+
+    template <typename T> 
+    struct is_vector_dual<T, true> {
+        typedef T type;
+        static const bool value = true;
+    };
+
+    //is_dual
+    template <typename T, bool Cond = boost::mpl::and_<
+        is_scalar_dual<T>, 
+        is_vector_dual<T> >::value>
     struct is_dual; 
 
     template <typename T>
@@ -46,26 +102,6 @@ namespace ad {
     };
 
 
-    /*
-     * is_vector
-     */
-    template <typename T, bool Cond = 
-        boost::is_base_of<
-        boost::numeric::ublas::vector_expression<T>, 
-        T>::value> 
-    struct is_vector;
-
-    template <typename T> 
-    struct is_vector<T, false> {
-        typedef T type;
-        static const bool value = false;
-    };
-
-    template <typename T>
-    struct is_vector<T, true> {
-        typedef T type;
-        static const bool value = true;
-    };
 
 } // namespace ad {
 

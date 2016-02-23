@@ -17,6 +17,18 @@
        std::cout << i << ":" << v(i) << std::endl;      \
     }                                                   
 
+#define DISPLAY_MATRIX_INFOS(v)                             \
+    std::cout << "var_name:" << #v << std::endl;            \
+    std::cout << "size1:" << v.size1() << std::endl;        \
+    std::cout << "size2:" << v.size2() << std::endl;        \
+    for (std::size_t i = 0; i < v.size1(); ++i) {           \
+        for (std::size_t j = 0; j < v.size2(); ++j) {       \
+           std::cout << "  " ;                              \
+           std::cout << v(i, j) << " ";                     \
+        }                                                   \
+        std::cout << std::endl;                             \
+    }                                                   
+
 #define DISPLAY_VAR(v)                                  \
     std::cout << #v ":" << v << std::endl;
 
