@@ -64,11 +64,9 @@ namespace ad {
         typedef T type;
         static const bool value = true;
     };
+
     //vector dual
-    template <typename T, bool Cond 
-        = boost::mpl::and_<
-            is_vector<T>,
-            is_scalar_dual<typename T::value_type> >::value>
+    template <typename T, bool Cond = is_vector<T>::value>
     struct is_vector_dual; 
 
     template <typename T>
@@ -78,21 +76,15 @@ namespace ad {
     };
 
     template <typename T> 
-    struct is_vector_dual<T, true> {
-        typedef T type;
-        static const bool value = true;
+    struct is_vector_dual<T, true> : is_scalar_dual<typename T::value_type> {
     };
 
     //is_dual
-    template <typename T, bool Cond = boost::mpl::and_<
-        is_scalar_dual<T>, 
-        is_vector_dual<T> >::value>
+    template <typename T, bool Cond = is_scalar_dual<T>::value >
     struct is_dual; 
 
     template <typename T>
-    struct is_dual<T, false> {
-        typedef T type;
-        static const bool value = false;
+    struct is_dual<T, false> : is_vector_dual<T> {
     };
 
     template <typename T> 

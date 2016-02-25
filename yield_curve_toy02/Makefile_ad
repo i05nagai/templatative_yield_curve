@@ -18,6 +18,9 @@ TEST_HEADERS+=ad_test/exp_test.h
 TEST_HEADERS+=ad_test/expression_template_test.h
 TEST_HEADERS+=ad_test/log_test.h
 TEST_HEADERS+=ad_test/vector_dual_test.h
+TEST_HEADERS+=ad_test/jacobian_matrix_test.h
+TEST_HEADERS+=ad_test/invert_test.h
+TEST_HEADERS+=ad_test/type_traits_test.h
 OBJECTS=$(SOURCES:.cpp=.o)
 TEST_OBJECTS=$(TEST_SOURCES:.cpp=.o)
 

@@ -149,10 +149,10 @@ namespace ad {
     /*
      * functor traits
      */
-    //dual jacobian: 
+    //dual jacobian_matrix: 
     template <typename D, 
         bool Cond = is_scalar_dual<D>::value>
-    struct dual_jacobian_traits;
+    struct dual_jacobian_matrix_traits;
 
     //(a^{1}+b^{1}d, ..., a^{M}+b^{M}d) 
     // or 
@@ -160,7 +160,7 @@ namespace ad {
     //..., 
     //a^{M}+b^{M}_{1}d_{1}+...+b^{M}_{N}d_{N}) 
     template <typename D>
-    struct dual_jacobian_traits<D, false> {
+    struct dual_jacobian_matrix_traits<D, false> {
     public:
         typedef typename detail::element_traits<D>::type 
             value_type;
@@ -185,7 +185,7 @@ namespace ad {
 
     //a+bd or a+b_{1}d_{1}+...+b_{N}d_{N}
     template <typename D>
-    struct dual_jacobian_traits<D, true> {
+    struct dual_jacobian_matrix_traits<D, true> {
     public:
         typedef typename D::value_type value_type;
         typedef typename D::infinitesmal_type infinitesmal_type;
@@ -206,13 +206,13 @@ namespace ad {
 
     template <typename D, 
          bool Cond = is_dual<D>::value>
-    struct jacobian_traits;
+    struct jacobian_matrix_traits;
 
     template <typename D>
-    struct jacobian_traits<D, false>;
+    struct jacobian_matrix_traits<D, false>;
 
     template <typename D>
-    struct jacobian_traits<D, true> : dual_jacobian_traits<D> {
+    struct jacobian_matrix_traits<D, true> : dual_jacobian_matrix_traits<D> {
     };
 
     /*
