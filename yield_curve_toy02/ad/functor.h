@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "fwd.h"
+#include "ad/type_traits.h"
 
 namespace ad {
     /*

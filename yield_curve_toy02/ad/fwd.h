@@ -11,7 +11,7 @@ namespace ad {
     //template <typename E> class vector_expression;
 
     template <typename E> class dual_expression;
-    template <typename T, int N = 1> class dual;
+    template <typename T, typename I> class dual;
 
     /*
      * exp
@@ -37,6 +37,31 @@ namespace ad {
     template <typename E> struct vector_log_traits;
     //dual
     template <typename E> struct dual_log_traits;
+
+    /*
+     * type_traits.h
+     */
+
+    template <typename T> 
+    struct type_traits;
+
+    template<class X, class Y>
+    struct promote_traits;
+
+    template <typename T, bool Cond = boost::is_base_of<
+        boost::numeric::ublas::vector_expression<T>, T>::value> 
+    struct is_vector;
+
+    template <typename T, bool Cond 
+        = boost::is_base_of<dual_expression<T>, T>::value> 
+    struct is_scalar_dual; 
+
+    template <typename T, bool Cond = is_vector<T>::value>
+    struct is_vector_dual; 
+
+    template <typename T, bool Cond = is_scalar_dual<T>::value >
+    struct is_dual; 
+
 } // namespace ad {
 
 #endif // #ifndef AD_FWD_H_INCLUDED
