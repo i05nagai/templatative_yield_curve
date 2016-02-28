@@ -1,11 +1,11 @@
-#ifndef YC_TEST_DATE_DATE_TEST_H_INCLUDED
-#define YC_TEST_DATE_DATE_TEST_H_INCLUDED
+#ifndef DDD_DATE_TEST_DATE_DATE_TEST_H_INCLUDED
+#define DDD_DATE_TEST_DATE_DATE_TEST_H_INCLUDED
 
 #include "yc/date/Date.h"
 
 #include <iostream>
 
-namespace yc_test { namespace date {
+namespace ddd { namespace date_test {
     inline std::ostream& operator<<(std::ostream& out, const yc::date::Date& d) {
         return out << d.year() << "-" << d.month() << "-" << d.day();
     }
@@ -34,7 +34,7 @@ namespace yc_test { namespace date {
         return true;
     }
     
-} } // namespace yc_test { namespace date {
+} } // namespace ddd { namespace date_test {
 
-#endif // #ifndef YC_TEST_DATE_TEST_H_INCLUDED
+#endif // #ifndef DDD_DATE_TEST_DATE_TEST_H_INCLUDED
 

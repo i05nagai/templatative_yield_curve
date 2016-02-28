@@ -1,7 +1,7 @@
-#ifndef DD_YC_YIELD_CURVE_H_INCLUDED
-#define DD_YC_YIELD_CURVE_H_INCLUDED
+#ifndef DDD_YC_YIELD_CURVE_H_INCLUDED
+#define DDD_YC_YIELD_CURVE_H_INCLUDED
 
-namespace dd { namespace yc {
+namespace ddd { namespace yc {
     template <typename T, typename D> 
     class quote {
     private:
@@ -21,9 +21,9 @@ namespace dd { namespace yc {
         value_type _r;
         date_type _d;
     };
-} } // namespace dd { namespace yc {
+} } // namespace ddd { namespace yc {
 
-namespace dd { namespace yc {
+namespace ddd { namespace yc {
     template <typename Qs>
     class yield_curve {
     private:
@@ -38,7 +38,7 @@ namespace dd { namespace yc {
         quotes_type _quotes;
         dates_type _dates;
     };
-} } // namespace dd { namespace yc {
+} } // namespace ddd { namespace yc {
 
-#endif // #ifndef DD_YC_YIELD_CURVE_H_INCLUDED
+#endif // #ifndef DDD_YC_YIELD_CURVE_H_INCLUDED
 

@@ -1,13 +1,13 @@
-#ifndef YC_TEST_DATE_JPTK_CALENDAR_TEST_H_INCLUDED
-#define YC_TEST_DATE_JPTK_CALENDAR_TEST_H_INCLUDED
+#ifndef DDD_DATE_TEST_JPTK_CALENDAR_TEST_H_INCLUDED
+#define DDD_DATE_TEST_JPTK_CALENDAR_TEST_H_INCLUDED
 
 #include "yc/date/jptk_calendar.h"
 
-namespace yc_test { namespace date {
+namespace ddd { namespace date_test {
     bool jptk_calendar_test()
     {
 
     }
-} // namespace yc_test { namespace date {
+} // namespace ddd { namespace date_test {
 
-#endif // #ifndef YC_TEST_DATE_JPTK_CALENDAR_TEST_H_INCLUDED
+#endif // #ifndef DDD_DATE_TEST_JPTK_CALENDAR_TEST_H_INCLUDED

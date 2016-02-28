@@ -1,5 +1,5 @@
-#ifndef AD_TYPE_TRAITS_H_INCLUDED
-#define AD_TYPE_TRAITS_H_INCLUDED
+#ifndef DDD_AD_TYPE_TRAITS_H_INCLUDED
+#define DDD_AD_TYPE_TRAITS_H_INCLUDED
 
 #include <boost/type_traits/is_base_of.hpp>
 #include <boost/numeric/ublas/vector.hpp>
@@ -8,7 +8,7 @@
 #include "ad/fwd.h"
 #include "ad/dual.h"
 
-namespace ad {
+namespace ddd { namespace ad {
     // default traits
     template <typename T>
     struct type_traits {
@@ -95,7 +95,7 @@ namespace ad {
 
 
 
-} // namespace ad {
+} } // namespace ddd { namespace ad {
 
-#endif // #ifndef AD_TYPE_TRAITS_H_INCLUDED
+#endif // #ifndef DDD_AD_TYPE_TRAITS_H_INCLUDED
 

@@ -6,7 +6,7 @@
 
 int main(int argc, char const* argv[])
 {
-    using namespace dd;
+    using namespace ddd;
     yc_test::curve_test();
     yc_test::calibrator_test();
 

@@ -1,7 +1,7 @@
-#ifndef DD_DATE_DAYCOUNTER_H_INCLUDED
-#define DD_DATE_DAYCOUNTER_H_INCLUDED
+#ifndef DDD_DATE_DAYCOUNTER_H_INCLUDED
+#define DDD_DATE_DAYCOUNTER_H_INCLUDED
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
     class DayCounter {
     public:
         double operator()(const Date& start, const Date& end) const;
@@ -11,6 +11,6 @@ namespace dd { namespace date {
             const Date& start, const Date& end) const = 0;
         virtual DayCounter* doClone() const = 0;
     };
-} // namespace dd { namespace date {
+} // namespace ddd { namespace date {
 
-#endif // #ifndef DD_DATE_DAYCOUNTER_H_INCLUDED
+#endif // #ifndef DDD_DATE_DAYCOUNTER_H_INCLUDED

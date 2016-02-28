@@ -1,6 +1,6 @@
 #include "Date.h"
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
         
     Date::Date(
         const std::size_t year,
@@ -72,5 +72,5 @@ namespace dd { namespace date {
         return (_date - other._date).days();
     }
     
-} } // namespace dd { namespace date {
+} } // namespace ddd { namespace date {
 

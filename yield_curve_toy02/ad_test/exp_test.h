@@ -7,6 +7,7 @@
 #include "ad/helper_macro.h"
 
 namespace ad_test {
+    namespace ad = ddd::ad;
     namespace ublas = boost::numeric::ublas;
     bool exp_test() {
         std::cout << "---------start-------" << std::endl;

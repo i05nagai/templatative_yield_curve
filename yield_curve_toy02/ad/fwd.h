@@ -1,11 +1,11 @@
-#ifndef AD_FWD_H_INCLUDED
-#define AD_FWD_H_INCLUDED
+#ifndef DDD_AD_FWD_H_INCLUDED
+#define DDD_AD_FWD_H_INCLUDED
 
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/numeric/ublas/vector_expression.hpp>
 
-namespace ad {
+namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
 
     //template <typename E> class vector_expression;
@@ -37,7 +37,7 @@ namespace ad {
     template <typename E> struct vector_log_traits;
     //dual
     template <typename E> struct dual_log_traits;
-} // namespace ad {
+} } // namespace ddd { namespace ad {
 
-#endif // #ifndef AD_FWD_H_INCLUDED
+#endif // #ifndef DDD_AD_FWD_H_INCLUDED
 
