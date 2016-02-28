@@ -1,10 +1,10 @@
-#ifndef DD_YC_CALIBRATOR_H_INCLUDED
-#define DD_YC_CALIBRATOR_H_INCLUDED
+#ifndef DDD_YC_CALIBRATOR_H_INCLUDED
+#define DDD_YC_CALIBRATOR_H_INCLUDED
 
 #include "ad/type_traits.h"
 #include <boost/type_traits/remove_reference.hpp>
 
-namespace dd { namespace yc {
+namespace ddd { namespace yc {
 
     template <typename F>
     struct functor_traits;
@@ -114,7 +114,7 @@ namespace dd { namespace yc {
     };
 
     
-} } // namespace dd { namespace yc {
+} } // namespace ddd { namespace yc {
 
-#endif // #ifndef DD_YC_CALIBRATOR_H_INCLUDED
+#endif // #ifndef DDD_YC_CALIBRATOR_H_INCLUDED
 

@@ -1,11 +1,11 @@
-#ifndef AD_FUNCTOR_H_INCLUDED
-#define AD_FUNCTOR_H_INCLUDED
+#ifndef DDD_AD_FUNCTOR_H_INCLUDED
+#define DDD_AD_FUNCTOR_H_INCLUDED
 
 #include <cmath>
 #include "fwd.h"
 #include "ad/type_traits.h"
 
-namespace ad {
+namespace ddd { namespace ad {
     /*
      * unary functors
      */
@@ -94,7 +94,7 @@ namespace ad {
         function2_type _f2;
     };
 
-} // namespace ad {
+} } // namespace ddd { namespace ad {
 
-#endif // #ifndef AD_FUNCTOR_H_INCLUDED
+#endif // #ifndef DDD_AD_FUNCTOR_H_INCLUDED
 

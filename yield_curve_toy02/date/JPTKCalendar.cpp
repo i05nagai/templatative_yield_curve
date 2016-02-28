@@ -1,6 +1,6 @@
 #include "JPTKCalendar.h"
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
     bool JPTKCalendar::isWeekend(const Date& date) const 
     {
         return date.weekday() == 0 || date.weekday() == 6;
@@ -100,5 +100,5 @@ namespace dd { namespace date {
         return true;
     }
 
-} // namespace dd { namespace date {
+} // namespace ddd { namespace date {
 

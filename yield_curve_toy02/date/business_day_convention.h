@@ -1,7 +1,7 @@
-#ifndef DD_DATE_BUSINESS_DAY_CONVENTION_H_INCLUDED
-#define DD_DATE_BUSINESS_DAY_CONVENTION_H_INCLUDED
+#ifndef DDD_DATE_BUSINESS_DAY_CONVENTION_H_INCLUDED
+#define DDD_DATE_BUSINESS_DAY_CONVENTION_H_INCLUDED
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
     
     enum BusinessDayConvention {
         //ISDA
@@ -29,6 +29,6 @@ namespace dd { namespace date {
                                           holiday. */
         Nearest                      /*!< Choose the nearest business day 
     };
-} // namespace dd { namespace date {
+} // namespace ddd { namespace date {
 
-#endif // #ifndef DD_DATE_BUSINESS_DAY_CONVENTION_H_INCLUDED
+#endif // #ifndef DDD_DATE_BUSINESS_DAY_CONVENTION_H_INCLUDED

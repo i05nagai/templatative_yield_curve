@@ -5,6 +5,7 @@
 #include "ad/dual.h"
 
 namespace ad_test {
+    namespace ad = ddd::ad;
     namespace ublas = boost::numeric::ublas;
     bool dual_test() {
         std::cout << "---------start-------" << std::endl;

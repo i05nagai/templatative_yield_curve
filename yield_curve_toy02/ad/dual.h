@@ -1,5 +1,5 @@
-#ifndef AD_DUAL_H_INCLUDED
-#define AD_DUAL_H_INCLUDED
+#ifndef DDD_AD_DUAL_H_INCLUDED
+#define DDD_AD_DUAL_H_INCLUDED
 
 #include "helper_macro.h"
 #include "type_traits.h"
@@ -11,7 +11,7 @@
 #include <boost/type_traits/is_scalar.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 
-namespace ad {
+namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
     
     template <typename E> 
@@ -543,8 +543,8 @@ namespace ad {
     }
     */
 
-} // namespace ad {
+} } // namespace ddd { namespace ad {
 
 
-#endif // #ifndef AD_DUAL_H_INCLUDED
+#endif // #ifndef DDD_AD_DUAL_H_INCLUDED
 
