@@ -5,52 +5,9 @@
 #include "ad/dual.h"
 
 
-template <typename T>
-T func1(T x)
-{
-    return x + x;
-}
-template <typename T>
-T func2(T x)
-{
-    return x + x - 2.0;
-}
-template <typename T>
-T func3(T x)
-{
-    return x * x;
-}
-template <typename T>
-T func4(T x)
-{
-    return x * x * 2.0 + 2.0;
-}
-
-template <typename T>
-ad::dual<T> g_func1(T x)
-{
-    return func1(ad::dual<T>(x) + ad::dual<T>::unit_dual(0));
-}
-
-template <typename T>
-ad::dual<T> g_func2(T x)
-{
-    return func2(ad::dual<T>(x) + ad::dual<T>::unit_dual(0));
-}
-
-template <typename T>
-ad::dual<T> g_func3(T x)
-{
-    return func3(ad::dual<T>(x) + ad::dual<T>::unit_dual(0));
-}
-
-template <typename T>
-ad::dual<T> g_func4(T x)
-{
-    return func4(ad::dual<T>(x) + ad::dual<T>::unit_dual(0));
-}
 
 namespace ad_test {
+    namespace ad = ddd::ad;
     namespace ublas = boost::numeric::ublas;
     bool dual_test() {
         std::cout << "---------start-------" << std::endl;

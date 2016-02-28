@@ -1,5 +1,5 @@
 #include "Calendar.h"
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
 
-} // namespace  { namespace date {
+} // namespace ddd { namespace date {

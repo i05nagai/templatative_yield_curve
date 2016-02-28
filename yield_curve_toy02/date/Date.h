@@ -1,10 +1,10 @@
-#ifndef DD_DATE_DATE_DATE_H_INCLUDED
-#define DD_DATE_DATE_DATE_H_INCLUDED
+#ifndef DDD_DATE_DATE_DATE_H_INCLUDED
+#define DDD_DATE_DATE_DATE_H_INCLUDED
 
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/operators.hpp>
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
         
     namespace gregorian = boost::gregorian;
     class Date : private 
@@ -33,7 +33,7 @@ namespace dd { namespace date {
     };
 
 
-} } // namespace dd { namespace date {
+} } // namespace ddd { namespace date {
 
-#endif // #ifndef DD_DATE_DATE_H_INCLUDED
+#endif // #ifndef DDD_DATE_DATE_H_INCLUDED
 

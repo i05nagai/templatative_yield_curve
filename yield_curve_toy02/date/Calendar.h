@@ -1,17 +1,17 @@
-#ifndef DD_DATE_CALENDAR_H_INCLUDED
-#define DD_DATE_CALENDAR_H_INCLUDED
+#ifndef DDD_DATE_CALENDAR_H_INCLUDED
+#define DDD_DATE_CALENDAR_H_INCLUDED
 
 #include "Date.h"
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
     class Calendar {
     public:
         virtual bool isHoliday(const Date& date) const = 0;
         virtual bool isBusinessDay(const Date& date) const = 0;
     };
-} // namespace dd { namespace date {
+} // namespace ddd { namespace date {
 
-#endif // #ifndef DD_DATE_CALENDAR_H_INCLUDED
+#endif // #ifndef DDD_DATE_CALENDAR_H_INCLUDED
 
 
 

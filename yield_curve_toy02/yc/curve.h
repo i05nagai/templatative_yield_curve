@@ -1,9 +1,9 @@
-#ifndef DD_YC_CURVE_H_INCLUDED
-#define DD_YC_CURVE_H_INCLUDED
+#ifndef DDD_YC_CURVE_H_INCLUDED
+#define DDD_YC_CURVE_H_INCLUDED
 
 #include "yc/interpolator.h"
 
-namespace dd { namespace yc {
+namespace ddd { namespace yc {
     // point <= first -> first
     // ith < point <= jth-> jth
     // end <= point -> end(c)
@@ -17,9 +17,9 @@ namespace dd { namespace yc {
         }
         return g.size();
     }
-} } // namespace dd { namespace yc {
+} } // namespace ddd { namespace yc {
 
-namespace dd { namespace yc {
+namespace ddd { namespace yc {
     template <typename G, typename V, typename I> 
     class curve {
     private: 
@@ -45,8 +45,8 @@ namespace dd { namespace yc {
         grid_type _grid;
         data_type _data;
     };
-} } // namespace dd { namespace yc {
+} } // namespace ddd { namespace yc {
 
-#endif // #ifndef DD_YC_CURVE_H_INCLUDED
+#endif // #ifndef DDD_YC_CURVE_H_INCLUDED
 
 

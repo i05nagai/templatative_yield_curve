@@ -1,15 +1,15 @@
-#ifndef YC_TEST_DATE_CALENDAR_TEST_H_INCLUDED
-#define YC_TEST_DATE_CALENDAR_TEST_H_INCLUDED
+#ifndef DDD_DATE_TEST_CALENDAR_TEST_H_INCLUDED
+#define DDD_DATE_TEST_CALENDAR_TEST_H_INCLUDED
 
 #include "yc/date/Calendar.h"
 
-namespace yc_test { namespace date {
+namespace ddd { namespace date_test {
 
     bool CalendarTest() 
     {
 
     }
     
-} // namespace yc_test { namespace date {
+} // namespace ddd { namespace date_test {
 
-#endif // #ifndef YC_TEST_DATE_CALENDAR_TEST_H_INCLUDED
+#endif // #ifndef DDD_DATE_TEST_CALENDAR_TEST_H_INCLUDED

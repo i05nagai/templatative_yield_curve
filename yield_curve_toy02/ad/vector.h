@@ -1,5 +1,5 @@
-#ifndef AD_VECTOR_H_INCLUDED
-#define AD_VECTOR_H_INCLUDED
+#ifndef DDD_AD_VECTOR_H_INCLUDED
+#define DDD_AD_VECTOR_H_INCLUDED
 
 #include <cstddef>
 
@@ -8,10 +8,10 @@
 #include "vector_expression.h"
 #include "helper_macro.h"
 
-namespace ad {
+namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
 
-} // namespace ad {
+} } // namespace ddd { namespace ad {
 
-#endif // #ifndef AD_VECTOR_H_INCLUDED
+#endif // #ifndef DDD_AD_VECTOR_H_INCLUDED
 

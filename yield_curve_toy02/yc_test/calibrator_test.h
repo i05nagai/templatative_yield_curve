@@ -8,7 +8,7 @@
 #include <boost/bind.hpp>
 
 
-namespace dd { namespace yc_test {
+namespace ddd { namespace yc_test {
     namespace ublas = boost::numeric::ublas;
 
     template <typename V, typename R>
@@ -31,7 +31,7 @@ namespace dd { namespace yc_test {
         result_type apply(
             const value_type& x)
         {
-            return (1.0 + (_endDate - _startDate) * rate) * x(_index) 
+            return (1.0 + (_endDate - _startDate) * _rate) * x(_index) 
                 - x(_index + 1);
         }
 
@@ -70,7 +70,7 @@ namespace dd { namespace yc_test {
             result_type fixed(0.0);
             for (std::size_t i = 0; i < numOfRoll; ++i) {
                 const double dayCountFraction = _frequency;
-                fixed = fixed + x(_index + i) * dayCountFraction * rate;
+                fixed = fixed + x(_index + i) * dayCountFraction * _rate;
             }
 
             //floating-side
@@ -131,7 +131,7 @@ namespace dd { namespace yc_test {
                 functions, method, x0);
     }
 
-} } // namespace dd { namespace yc_test {
+} } // namespace ddd { namespace yc_test {
 
 #endif // #ifndef DD_YC_TEST_CALIBRATOR_TEST_H_INCLUDED
 

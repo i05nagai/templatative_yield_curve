@@ -1,5 +1,5 @@
-#ifndef AD_FUNCTION_H_INCLUDED
-#define AD_FUNCTION_H_INCLUDED
+#ifndef DDD_AD_FUNCTION_H_INCLUDED
+#define DDD_AD_FUNCTION_H_INCLUDED
 
 #include "ad/dual.h"
 #include "ad/functor.h"
@@ -11,7 +11,7 @@
 #include <boost/numeric/ublas/matrix.hpp>
 
 
-namespace ad {
+namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
 
     /*
@@ -194,7 +194,7 @@ namespace ad {
         return rhs;
     }
 
-} // namespace ad {
+} } // namespace ddd { namespace ad {
 
-#endif // #ifndef AD_FUNCTION_H_INCLUDED
+#endif // #ifndef DDD_AD_FUNCTION_H_INCLUDED
 

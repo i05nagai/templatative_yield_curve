@@ -1,9 +1,9 @@
-#ifndef AD_VECTOR_EXPRESSION_H_INCLUDED
-#define AD_VECTOR_EXPRESSION_H_INCLUDED
+#ifndef DDD_AD_VECTOR_EXPRESSION_H_INCLUDED
+#define DDD_AD_VECTOR_EXPRESSION_H_INCLUDED
 
 #include <boost/numeric/ublas/expression_types.hpp>
 
-namespace ad {
+namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
     /**
      * vector_functor_traits
@@ -44,7 +44,7 @@ namespace ad {
         function_type _f;
     };
 
-} // namespace ad {
+} } // namespace ddd { namespace ad {
 
-#endif // #ifndef AD_VECTOR_EXPRESSION_H_INCLUDED
+#endif // #ifndef DDD_AD_VECTOR_EXPRESSION_H_INCLUDED
 

@@ -1,5 +1,5 @@
-#ifndef AD_HELPER_MACRO_H_INCLUDED
-#define AD_HELPER_MACRO_H_INCLUDED
+#ifndef DDD_AD_HELPER_MACRO_H_INCLUDED
+#define DDD_AD_HELPER_MACRO_H_INCLUDED
 
 
 #include <iostream>
@@ -49,5 +49,5 @@
         }                                                                   \
     }
 
-#endif // #ifndef AD_HELPER_MACRO_H_INCLUDED
+#endif // #ifndef DDD_AD_HELPER_MACRO_H_INCLUDED
 

@@ -1,16 +1,16 @@
-#ifndef DD_BUSINESS_CENTER_H_INCLUDED
-#define DD_BUSINESS_CENTER_H_INCLUDED
+#ifndef DDD_BUSINESS_CENTER_H_INCLUDED
+#define DDD_BUSINESS_CENTER_H_INCLUDED
 
-namespace dd {
+namespace ddd {
     enum BusinessCenter {
         JPTK, //
         USNY,
     };
-} // namespace dd {
+} // namespace ddd {
 
 
 
-#endif // #ifndef DD_BUSINESS_CENTER_H_INCLUDED
+#endif // #ifndef DDD_BUSINESS_CENTER_H_INCLUDED
 
 
 
