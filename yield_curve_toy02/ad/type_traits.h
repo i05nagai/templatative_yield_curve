@@ -28,18 +28,20 @@ namespace ddd { namespace ad {
     };
 
     /*
+     * is_scalar
+     */
+    //TODO: dual<double> is scalar?
+    template <typename T> 
+    struct is_scalar 
+    : boost::mpl::bool_<boost::is_scalar<T>::value> {
+    };
+
+    /*
      * is_vector
      */
     template <typename T> 
-    struct is_vector<T, false> {
-        typedef T type;
-        static const bool value = false;
-    };
-
-    template <typename T>
-    struct is_vector<T, true> {
-        typedef T type;
-        static const bool value = true;
+    struct is_vector : boost::mpl::bool_<
+        boost::is_base_of<ublas::vector_expression<T>, T>::value> {
     };
 
     /*
@@ -47,38 +49,29 @@ namespace ddd { namespace ad {
      */
     //scalar dual
     template <typename T>
-    struct is_scalar_dual<T, false> {
-        typedef T type;
-        static const bool value = false;
-    };
-
-    template <typename T> 
-    struct is_scalar_dual<T, true> {
-        typedef T type;
-        static const bool value = true;
+    struct is_scalar_dual 
+    : boost::mpl::bool_<boost::is_base_of<dual_expression<T>, T>::value> 
+    {
     };
 
     //vector dual
     template <typename T>
-    struct is_vector_dual<T, false> {
-        typedef T type;
-        static const bool value = false;
+    struct is_vector_dual<T, true> 
+    : boost::mpl::bool_<is_scalar_dual<typename T::value_type>::value> {
     };
 
-    template <typename T> 
-    struct is_vector_dual<T, true> : is_scalar_dual<typename T::value_type> {
+    template <typename T>
+    struct is_vector_dual<T, false> : boost::mpl::bool_<false> {
     };
 
     //is_dual
     template <typename T>
-    struct is_dual<T, false> : is_vector_dual<T> {
+    struct is_dual : boost::mpl::bool_<
+         boost::mpl::or_<
+             is_vector_dual<T>, 
+             is_scalar_dual<T> >::value> {
     };
 
-    template <typename T> 
-    struct is_dual<T, true> {
-        typedef T type;
-        static const bool value = true;
-    };
 
 } } // namespace ddd { namespace ad {
 
