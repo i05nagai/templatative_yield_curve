@@ -11,6 +11,7 @@
 #include <boost/mpl/and.hpp>
 #include <boost/type_traits/is_scalar.hpp>
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/utility/enable_if.hpp>
 
 namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
@@ -190,14 +191,33 @@ namespace ddd { namespace ad {
             inf_traits::apply(e1(), e2()));
     }
 
-    /*
+    namespace detail {
+        template <typename V1, typename I1, typename T>
+        struct dual_plus_not_dual_traits {
+        public:
+            typedef typename dual_binary_traits<
+                dual<V1, I1>, 
+                dual<T, I1>,
+                dual_plus<dual<V1, I1>, dual<T, I1> > >::result_type type;
+        };
+    } // namespace detail
+
     // dual<double> = dual<double> + double
     // T is not dual, not vector, arithmetic.
-    template<typename T, typename E, int N>
-    dual<E, N> operator +(const dual<E, N>& x, const T& y)
-    {
-        return x + dual<T, N>(y);
-    }
+    // TODO:need to modify dual binary operators to make these kind of operations available.
+//    template<typename V1, typename I1, typename T>
+//    typename boost::lazy_enable_if<
+//        boost::mpl::not_<is_dual<T> >, 
+//        detail::dual_plus_not_dual_traits<V1, I1, T> >::type
+//    operator +(const dual<V1, I1>& x, const T& y)
+//    {
+//        static dual<T, I1> d(1.0, I1(0));
+//        d.v() = y;
+//        d.d().resize(x.d().size());
+//        return x + dual<double>(2.0, I1(2));
+//    }
+
+    /*
     // dual<double> =  double(constant) + dual<double>
     template<typename T, typename E, int N>
     dual<E, N> operator +(const T& x, const dual<E, N>& y)

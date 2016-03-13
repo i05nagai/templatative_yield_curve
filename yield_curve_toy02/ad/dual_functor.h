@@ -42,6 +42,7 @@ namespace ddd { namespace ad {
         typedef typename inf1_type::value_type inf1_value_type;
         typedef typename D2::inf_type inf2_type;
         typedef typename inf2_type::value_type inf2_value_type;
+        //
         typedef ublas::scalar_plus<inf1_value_type, inf2_value_type> functor_type;
         typedef ublas::vector_binary_traits<inf1_type, inf2_type, functor_type> _Tr;
     public:

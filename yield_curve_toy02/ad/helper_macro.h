@@ -29,7 +29,7 @@
         std::cout << std::endl;                             \
     }                                                   
 
-#define DISPLAY_VAR(v)                                  \
+#define DISPLAY_VAR(v)                                      \
     std::cout << #v ":" << v << std::endl;
 
 #define DISPLAY_DUAL(x)                                                     \
@@ -39,15 +39,17 @@
         std::cout << "  derivative" << i << ":" << x.d()(i) << std::endl;   \
     }
 
-#define DISPLAY_DUAL2(x)                                                    \
+#define DISPLAY_DUAL_MULTI_VAR(x)                                                    \
     std::cout << #x":" << std::endl;                                        \
-    std::cout << "  value:" << x.v().v() << std::endl;                      \
-    for (std::size_t i = 0; i < x.d().size(); ++i) {                        \
-        for (std::size_t j = 0; j < x.d()(i).d().size(); ++j) {             \
-            std::cout << "  derivative[" << i << "," << j << "]:"           \
-                << x.d()(i).d()(j) << std::endl;                            \
+    for (std::size_t i = 0; i < x.size(); ++i) {                        \
+        std::cout << "  value:" << x(i).v() << std::endl;                      \
+        std::cout << "  derivative[" << i << "]:" << std::endl;        \
+        std::cout << "    "; \
+        for (std::size_t j = 0; j < x(i).d().size(); ++j) {             \
+            std::cout << x(i).d()(j) << ", ";                            \
         }                                                                   \
+        std::cout << std::endl; \
     }
 
-#endif // #ifndef DDD_AD_HELPER_MACRO_H_INCLUDED
+#endif // #ifndef AD_HELPER_MACRO_H_INCLUDED
 
