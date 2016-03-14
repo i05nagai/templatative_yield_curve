@@ -1,6 +1,7 @@
 #ifndef AD_TEST_DUAL_TEST_H_INCLUDED
 #define AD_TEST_DUAL_TEST_H_INCLUDED
 
+#include "ad/helper_function.h"
 #include "ad/helper_macro.h"
 #include "ad/dual.h"
 
@@ -11,52 +12,52 @@ namespace ad_test {
         std::cout << "---------start-------" << std::endl;
         std::cout << "---size=0" << std::endl;
         //case: size = 0
-//        {
-//            ad::dual<double> c1(1.0);
-//            ad::dual<double> c2(2.0);
-//            DISPLAY_DUAL(c1);
-//            DISPLAY_DUAL(c2);
-//            ad::dual<double> c3 = c1 + c2;
-//            ad::dual<double> c4 = c1 - c2;
-//            ad::dual<double> c5 = c1 * c2;
-//            ad::dual<double> c6 = c1 / c2;
-//            ad::dual<double> c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2;
-//            std::cout << "c3 = c1 + c2" << std::endl;
-//            DISPLAY_DUAL(c3);
-//            std::cout << "c4 = c1 - c2" << std::endl;
-//            DISPLAY_DUAL(c4);
-//            std::cout << "c5 = c1 * c2" << std::endl;
-//            DISPLAY_DUAL(c5);
-//            std::cout << "c6 = c1 / c2" << std::endl;
-//            DISPLAY_DUAL(c6);
-//            std::cout << "c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2" << std::endl;
-//            DISPLAY_DUAL(c0);
-//        }
-//        std::cout << "---size=1" << std::endl;
-//        //case: size = 1
-//        {
-//            ublas::vector<double> d1(1, 0.0);
-//            ublas::vector<double> d2(1, 1.0);
-//            ad::dual<double> c1(1.0, d1);
-//            ad::dual<double> c2(2.0, d2);
-//            DISPLAY_DUAL(c1);
-//            DISPLAY_DUAL(c2);
-//            ad::dual<double> c3 = c1 + c2;
-//            ad::dual<double> c4 = c1 - c2;
-//            ad::dual<double> c5 = c1 * c2;
-//            ad::dual<double> c6 = c1 / c2;
-//            ad::dual<double> c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2;
-//            std::cout << "c3 = c1 + c2" << std::endl;
-//            DISPLAY_DUAL(c3);
-//            std::cout << "c4 = c1 - c2" << std::endl;
-//            DISPLAY_DUAL(c4);
-//            std::cout << "c5 = c1 * c2" << std::endl;
-//            DISPLAY_DUAL(c5);
-//            std::cout << "c6 = c1 / c2" << std::endl;
-//            DISPLAY_DUAL(c6);
-//            std::cout << "c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2" << std::endl;
-//            DISPLAY_DUAL(c0);
-//        }
+        {
+            ad::dual<double> c1(1.0);
+            ad::dual<double> c2(2.0);
+            DISPLAY_DUAL(c1);
+            DISPLAY_DUAL(c2);
+            ad::dual<double> c3 = c1 + c2;
+            ad::dual<double> c4 = c1 - c2;
+            ad::dual<double> c5 = c1 * c2;
+            ad::dual<double> c6 = c1 / c2;
+            ad::dual<double> c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2;
+            std::cout << "c3 = c1 + c2" << std::endl;
+            DISPLAY_DUAL(c3);
+            std::cout << "c4 = c1 - c2" << std::endl;
+            DISPLAY_DUAL(c4);
+            std::cout << "c5 = c1 * c2" << std::endl;
+            DISPLAY_DUAL(c5);
+            std::cout << "c6 = c1 / c2" << std::endl;
+            DISPLAY_DUAL(c6);
+            std::cout << "c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2" << std::endl;
+            DISPLAY_DUAL(c0);
+        }
+        std::cout << "---size=1" << std::endl;
+        //case: size = 1
+        {
+            ublas::vector<double> d1(1, 0.0);
+            ublas::vector<double> d2(1, 1.0);
+            ad::dual<double> c1(1.0, d1);
+            ad::dual<double> c2(2.0, d2);
+            DISPLAY_DUAL(c1);
+            DISPLAY_DUAL(c2);
+            ad::dual<double> c3 = c1 + c2;
+            ad::dual<double> c4 = c1 - c2;
+            ad::dual<double> c5 = c1 * c2;
+            ad::dual<double> c6 = c1 / c2;
+            ad::dual<double> c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2;
+            std::cout << "c3 = c1 + c2" << std::endl;
+            DISPLAY_DUAL(c3);
+            std::cout << "c4 = c1 - c2" << std::endl;
+            DISPLAY_DUAL(c4);
+            std::cout << "c5 = c1 * c2" << std::endl;
+            DISPLAY_DUAL(c5);
+            std::cout << "c6 = c1 / c2" << std::endl;
+            DISPLAY_DUAL(c6);
+            std::cout << "c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2" << std::endl;
+            DISPLAY_DUAL(c0);
+        }
 
         //case: size = 2
         {
@@ -65,17 +66,10 @@ namespace ad_test {
         //case: dim=2, size=2
         std::cout << "---dim=2, size=2" << std::endl;
         {
-            ublas::vector<double> constant(2, 0.0);
-            ublas::vector<double> d1(2, 0.0);
-            ublas::vector<double> d2(2, 0.0);
-            d1(0) = 1.0;
-            d1(1) = 0.0;
-            d2(0) = 0.0;
-            d2(1) = 1.0;
-            ad::dual<double> c10(1.0, constant);
-            ad::dual<double> c11(2.0, d2);
-            ad::dual<double> c20(3.0, d1);
-            ad::dual<double> c21(4.0, constant);
+            ad::dual<double> c10 = ad::make_variable(1.0, 2, 0);
+            ad::dual<double> c11 = ad::make_constant(2.0, 2);
+            ad::dual<double> c20 = ad::make_constant(3.0, 2);
+            ad::dual<double> c21 = ad::make_variable(4.0, 2, 1);
             ublas::vector<ad::dual<double> > c1(2);
             ublas::vector<ad::dual<double> > c2(2);
             c1(0) = c10;
@@ -98,7 +92,9 @@ namespace ad_test {
             DISPLAY_DUAL_MULTI_VAR(c5);
             std::cout << "c6 = c1 / c2" << std::endl;
             DISPLAY_DUAL_MULTI_VAR(c6);
-            std::cout << "c0 = c1 + c2 + c1 - c2 + ublas::element_prod(c1, c2) + ublas::element_div(c1, c2)" << std::endl;
+            std::cout << "c0 = c1 + c2 + c1 - c2 "
+                << "+ ublas::element_prod(c1, c2) "
+                << "+ ublas::element_div(c1, c2)" << std::endl;
             DISPLAY_DUAL_MULTI_VAR(c0);
         }
 
