@@ -39,16 +39,16 @@
         std::cout << "  derivative" << i << ":" << x.d()(i) << std::endl;   \
     }
 
-#define DISPLAY_DUAL_MULTI_VAR(x)                                                    \
+#define DISPLAY_DUAL_MULTI_VAR(x)                                           \
     std::cout << #x":" << std::endl;                                        \
-    for (std::size_t i = 0; i < x.size(); ++i) {                        \
-        std::cout << "  value:" << x(i).v() << std::endl;                      \
-        std::cout << "  derivative[" << i << "]:" << std::endl;        \
-        std::cout << "    "; \
-        for (std::size_t j = 0; j < x(i).d().size(); ++j) {             \
-            std::cout << x(i).d()(j) << ", ";                            \
+    for (std::size_t i = 0; i < x.size(); ++i) {                            \
+        std::cout << "  value:" << x(i).v() << std::endl;                   \
+        std::cout << "  derivative[" << i << "]:" << std::endl;             \
+        std::cout << "    ";                                                \
+        for (std::size_t j = 0; j < x(i).d().size(); ++j) {                 \
+            std::cout << x(i).d()(j) << ", ";                               \
         }                                                                   \
-        std::cout << std::endl; \
+        std::cout << std::endl;                                             \
     }
 
 #endif // #ifndef AD_HELPER_MACRO_H_INCLUDED

@@ -13,11 +13,11 @@ namespace ddd { namespace ad {
     dual<V> make_variable(
         const V& v, 
         const std::size_t size, 
-        const std::size_t i)
+        const std::size_t position)
     {
-        assert(i < size);
+        assert(position < size);
         ublas::vector<V> d(size, 0);
-        d(i) = 1;
+        d(position) = 1;
         return dual<V>(v, d);
     }
 
