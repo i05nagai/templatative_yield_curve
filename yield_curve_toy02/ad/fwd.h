@@ -82,21 +82,26 @@ namespace ddd { namespace ad {
             boost::is_scalar<typename D1::value_type>,
             boost::is_scalar<typename D2::value_type> >::value>
     struct dual_value_scalar_plus_scalar_traits;
+    
     template <typename D1, typename D2>
     struct dual_value_plus_traits;
+
     //inf part
     template <typename D1, typename D2, bool Cond =
         boost::mpl::and_<
             is_vector<typename D1::inf_type>,
             is_vector<typename D2::inf_type> >::value>
     struct dual_inf_vector_plus_vector_traits;
+
     template <typename D1, typename D2, bool Cond =
         boost::mpl::and_<
             boost::is_scalar<typename D1::inf_type>,
             boost::is_scalar<typename D2::inf_type> >::value>
     struct dual_inf_scalar_plus_scalar_traits;
+
     template <typename D1, typename D2>
     struct dual_inf_plus_traits;
+
     //dual plus
     template <typename D1, typename D2>
     class dual_plus;
@@ -108,21 +113,26 @@ namespace ddd { namespace ad {
             boost::is_scalar<typename D1::value_type>,
             boost::is_scalar<typename D2::value_type> >::value>
     struct dual_value_scalar_minus_scalar_traits;
+    
     template <typename D1, typename D2>
     struct dual_value_minus_traits;
+
     //inf part
     template <typename D1, typename D2, bool Cond =
         boost::mpl::and_<
             is_vector<typename D1::inf_type>,
             is_vector<typename D2::inf_type> >::value>
     struct dual_inf_vector_minus_vector_traits;
+
     template <typename D1, typename D2, bool Cond =
         boost::mpl::and_<
             boost::is_scalar<typename D1::inf_type>,
             boost::is_scalar<typename D2::inf_type> >::value>
     struct dual_inf_scalar_minus_scalar_traits;
+
     template <typename D1, typename D2>
     struct dual_inf_minus_traits;
+
     //dual minus
     template <typename D1, typename D2>
     class dual_minus;
@@ -134,21 +144,26 @@ namespace ddd { namespace ad {
             boost::is_scalar<typename D1::value_type>,
             boost::is_scalar<typename D2::value_type> >::value>
     struct dual_value_scalar_multiplies_scalar_traits;
+
     template <typename D1, typename D2>
     struct dual_value_multiplies_traits;
+
     //inf part
     template <typename D1, typename D2, bool Cond =
         boost::mpl::and_<
             is_vector<typename D1::inf_type>,
             is_vector<typename D2::inf_type> >::value>
     struct dual_inf_vector_multiplies_vector_traits;
+
     template <typename D1, typename D2, bool Cond = 
         boost::mpl::and_<
             boost::is_scalar<typename D1::inf_type>,
             boost::is_scalar<typename D2::inf_type> >::value>
     struct dual_inf_scalar_multiplies_scalar_traits;
+
     template <typename D1, typename D2>
     struct dual_inf_multiplies_traits;
+
     //dual part
     template <typename D1, typename D2>
     class dual_multiplies;
@@ -160,25 +175,29 @@ namespace ddd { namespace ad {
             boost::is_scalar<typename D1::value_type>,
             boost::is_scalar<typename D2::value_type> >::value>
     struct dual_value_scalar_divides_scalar_traits;
+
     template <typename D1, typename D2>
     struct dual_value_divides_traits;
+
     //inf part
     template <typename D1, typename D2, bool Cond =
         boost::mpl::and_<
             is_vector<typename D1::inf_type>,
             is_vector<typename D2::inf_type> >::value>
     struct dual_inf_vector_divides_vector_traits;
+
     template <typename D1, typename D2, bool Cond =
         boost::mpl::and_<
             boost::is_scalar<typename D1::inf_type>,
             boost::is_scalar<typename D2::inf_type> >::value>
     struct dual_inf_scalar_divides_scalar_traits;
+
     template <typename D1, typename D2>
     struct dual_inf_divides_traits;
+
     //dual part
     template <typename D1, typename D2>
     class dual_divides;
-
 
 } } // namespace ddd { namespace ad {
 

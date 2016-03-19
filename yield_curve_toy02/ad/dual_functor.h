@@ -27,12 +27,14 @@ namespace ddd { namespace ad {
             return e1.v() + e2.v();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_value_plus_traits 
     : dual_value_scalar_plus_scalar_traits<D1, D2> {
     private:
     public:
     };
+
     //inf part
     template <typename D1, typename D2>
     struct dual_inf_vector_plus_vector_traits<D1, D2, true> {
@@ -57,10 +59,12 @@ namespace ddd { namespace ad {
             return e1.d() + e2.d();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_inf_scalar_plus_scalar_traits<D1, D2, false> 
     : public dual_inf_vector_plus_vector_traits<D1, D2> {
     };
+
     template <typename D1, typename D2>
     struct dual_inf_scalar_plus_scalar_traits<D1, D2, true> {
     private:
@@ -80,10 +84,12 @@ namespace ddd { namespace ad {
             return e1.d() + e2.d();
         }
     };
+    
     template <typename D1, typename D2>
     struct dual_inf_plus_traits 
     : public dual_inf_scalar_plus_scalar_traits<D1, D2> {
     };
+
     //dual plus
     template <typename D1, typename D2>
     class dual_plus {
@@ -119,12 +125,14 @@ namespace ddd { namespace ad {
             return e1.v() - e2.v();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_value_minus_traits 
     : dual_value_scalar_minus_scalar_traits<D1, D2> {
     private:
     public:
     };
+
     //inf part
     template <typename D1, typename D2>
     struct dual_inf_vector_minus_vector_traits<D1, D2, true> {
@@ -148,10 +156,12 @@ namespace ddd { namespace ad {
             return e1.d() - e2.d();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_inf_scalar_minus_scalar_traits<D1, D2, false> 
     : public dual_inf_vector_minus_vector_traits<D1, D2> {
     };
+
     template <typename D1, typename D2>
     struct dual_inf_scalar_minus_scalar_traits<D1, D2, true> {
     private:
@@ -171,10 +181,12 @@ namespace ddd { namespace ad {
             return e1.d() - e2.d();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_inf_minus_traits 
     : public dual_inf_scalar_minus_scalar_traits<D1, D2> {
     };
+
     //dual minus
     template <typename D1, typename D2>
     class dual_minus {
@@ -210,12 +222,14 @@ namespace ddd { namespace ad {
             return e1.v() * e2.v();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_value_multiplies_traits 
     : dual_value_scalar_multiplies_scalar_traits<D1, D2> {
     private:
     public:
     };
+
     //inf part
     template <typename D1, typename D2>
     struct dual_inf_vector_multiplies_vector_traits<D1, D2, true> {
@@ -266,10 +280,12 @@ namespace ddd { namespace ad {
             return e1.d() * e2.v() + e1.v() * e2.d();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_inf_scalar_multiplies_scalar_traits<D1, D2, false> 
     : public dual_inf_vector_multiplies_vector_traits<D1, D2> {
     };
+
     template <typename D1, typename D2>
     struct dual_inf_scalar_multiplies_scalar_traits<D1, D2, true> {
     private:
@@ -301,10 +317,12 @@ namespace ddd { namespace ad {
             return e1.d() * e2.v() + e1.v() * e2.d();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_inf_multiplies_traits 
     : public dual_inf_scalar_multiplies_scalar_traits<D1, D2> {
     };
+
     //dual part
     template <typename D1, typename D2>
     class dual_multiplies {
@@ -341,12 +359,14 @@ namespace ddd { namespace ad {
             return e1.v() / e2.v();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_value_divides_traits 
     : dual_value_scalar_divides_scalar_traits<D1, D2> {
     private:
     public:
     };
+
     //inf part
     template <typename D1, typename D2>
     struct dual_inf_vector_divides_vector_traits<D1, D2, true> {
@@ -412,10 +432,12 @@ namespace ddd { namespace ad {
             return (e1.d() * e2.v() - e1.v() * e2.d()) / (e2.v() * e2.v());
         }
     };
+
     template <typename D1, typename D2>
     struct dual_inf_scalar_divides_scalar_traits<D1, D2, false> 
     : public dual_inf_vector_divides_vector_traits<D1, D2> {
     };
+
     template <typename D1, typename D2>
     struct dual_inf_scalar_divides_scalar_traits<D1, D2, true> {
     private:
@@ -447,10 +469,12 @@ namespace ddd { namespace ad {
             return e1.v() * e2.d() + e1.d() * e2.v();
         }
     };
+
     template <typename D1, typename D2>
     struct dual_inf_divides_traits 
     : public dual_inf_scalar_divides_scalar_traits<D1, D2> {
     };
+
     //dual part
     template <typename D1, typename D2>
     class dual_divides {
