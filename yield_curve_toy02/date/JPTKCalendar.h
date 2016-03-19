@@ -1,7 +1,7 @@
-#ifndef DD_DATE_JPTK_CALENDAR_H_INCLUDED
-#define DD_DATE_JPTK_CALENDAR_H_INCLUDED
+#ifndef DDD_DATE_JPTK_CALENDAR_H_INCLUDED
+#define DDD_DATE_JPTK_CALENDAR_H_INCLUDED
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
     namespace date_time = boost::gregorian::date_time;
 
     class JPTKCalendar : public Calendar {
@@ -10,8 +10,8 @@ namespace dd { namespace date {
         bool isBusinessDay(const Date& date) const;
     };
     
-} } // namespace dd { namespace date {
+} } // namespace ddd { namespace date {
 
 
-#endif // #ifndef DD_DATE_JPTK_CALENDAR_H_INCLUDED
+#endif // #ifndef DDD_DATE_JPTK_CALENDAR_H_INCLUDED
 

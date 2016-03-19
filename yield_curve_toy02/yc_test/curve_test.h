@@ -6,7 +6,7 @@
 #include "yc/interpolator.h"
 #include "NumberGenerator.h"
 
-namespace dd { namespace yc_test {
+namespace ddd { namespace yc_test {
     bool curve_test() 
     {
         detail::NumberGenerator generator(0.0, 10.0);
@@ -54,7 +54,7 @@ namespace dd { namespace yc_test {
         return true;
     }
     
-} } // namespace dd { namespace yc_test {
+} } // namespace ddd { namespace yc_test {
 
 #endif // #ifndef DD_YC_TEST_CURVE_TEST_H_INCLUDED
 

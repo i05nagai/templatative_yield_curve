@@ -1,24 +1,14 @@
-#ifndef AD_FUNCTOR_H_INCLUDED
-#define AD_FUNCTOR_H_INCLUDED
+#ifndef DDD_AD_FUNCTOR_H_INCLUDED
+#define DDD_AD_FUNCTOR_H_INCLUDED
 
 #include <cmath>
 #include "fwd.h"
+#include "ad/type_traits.h"
 
-namespace ad {
+namespace ddd { namespace ad {
     /*
      * unary functors
      */
-    template <typename T>
-    class unary_minus {
-    public:
-        typedef typename type_traits<T>::const_reference argument_type;
-        typedef T result_type;
-
-        static result_type apply(argument_type v)
-        {
-            return -v;
-        }
-    };
 
     //T is matrix -> inverse matrix
     //T is vector -> inverse matrix which interprets vector as matrix
@@ -62,68 +52,49 @@ namespace ad {
     /*
      * binary functors
      */
-    template <typename T1, typename T2>
-    class scalar_plus {
+
+    /*
+     * functors
+     */
+    // R^n -> R^2
+    template <typename F1, typename F2>
+    class functor2 {
+    private:
+        typedef typename F1::value_type value1_type;
+        typedef typename F2::value_type value2_type;
+        typedef typename F1::result_type result1_type;
+        typedef typename F2::result_type result2_type;
     public:
-        typedef typename type_traits<T1>::const_reference argument1_type;
-        typedef typename type_traits<T2>::const_reference argument2_type;
-        typedef typename promote_traits<T1, T2>::type result_type;
-        
-        static result_type apply(
-            argument1_type v1, 
-            argument2_type v2)
+        typedef F1 function1_type;
+        typedef F2 function2_type;
+        typedef typename promote_traits<
+            value1_type, value2_type>::type value_type;
+        typedef typename promote_traits<
+            result1_type, result2_type>::type result_value_type;
+        //TODO: need to consider value_type is scalar(e.g. double)
+        typedef typename value_type::value_type element_type;
+        typedef ublas::vector<element_type> result_type;
+    public:
+        functor2(const function1_type& f1, const function2_type& f2)
+        : _f1(f1), _f2(f2)
         {
-            return v1 + v2;
         }
+
+        result_type operator()(
+            const value_type& x)
+        {
+            result_type y(2);
+            y[0] = _f1(x);
+            y[1] = _f2(x);
+            return y;
+        }
+
+    private:
+        function1_type _f1;
+        function2_type _f2;
     };
 
-    template <typename T1, typename T2>
-    class scalar_minus {
-    public:
-        typedef typename type_traits<T1>::const_reference argument1_type;
-        typedef typename type_traits<T2>::const_reference argument2_type;
-        typedef typename promote_traits<T1, T2>::type result_type;
-        
-        static result_type apply(
-            argument1_type v1, 
-            argument2_type v2)
-        {
-            return v1 - v2;
-        }
-    };
+} } // namespace ddd { namespace ad {
 
-    template<typename T1, typename T2>
-    class scalar_mult {
-    public:
-        typedef typename type_traits<T1>::const_reference argument1_type;
-        typedef typename type_traits<T2>::const_reference argument2_type;
-        typedef typename promote_traits<T1, T2>::type result_type;
-        
-        static result_type apply(
-            argument1_type v1, 
-            argument2_type v2)
-        {
-            return v1 * v2;
-        }
-    };
-
-    template<typename T1, typename T2>
-    class scalar_div {
-    public:
-        typedef typename type_traits<T1>::const_reference argument1_type;
-        typedef typename type_traits<T2>::const_reference argument2_type;
-        typedef typename promote_traits<T1, T2>::type result_type;
-        
-        static result_type apply(
-            argument1_type v1, 
-            argument2_type v2)
-        {
-            //TODO:need to check zero division.
-            return v1 / v2;
-        }
-    };
-
-} // namespace ad {
-
-#endif // #ifndef AD_FUNCTOR_H_INCLUDED
+#endif // #ifndef DDD_AD_FUNCTOR_H_INCLUDED
 

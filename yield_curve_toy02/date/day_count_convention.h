@@ -1,7 +1,7 @@
-#ifndef DD_DATE_DAY_COUNT_CONVENTION_H_INCLUDED
-#define DD_DATE_DAY_COUNT_CONVENTION_H_INCLUDED
+#ifndef DDD_DATE_DAY_COUNT_CONVENTION_H_INCLUDED
+#define DDD_DATE_DAY_COUNT_CONVENTION_H_INCLUDED
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
     enum DayCountConvention {
         Act/360,
         Act/365,
@@ -9,6 +9,6 @@ namespace dd { namespace date {
         30/365,
         BUS/252,
     };
-} // namespace dd { namespace date {
+} // namespace ddd { namespace date {
 
-#endif // #ifndef DD_DATE_DAY_COUNT_CONVENTION_H_INCLUDED
+#endif // #ifndef DDD_DATE_DAY_COUNT_CONVENTION_H_INCLUDED

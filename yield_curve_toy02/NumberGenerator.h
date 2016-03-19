@@ -3,7 +3,7 @@
 
 #include <boost/random.hpp>
 
-namespace dd { namespace detail {
+namespace ddd { namespace detail {
     class NumberGenerator {
     public:
         NumberGenerator(
@@ -22,6 +22,6 @@ namespace dd { namespace detail {
         boost::variate_generator<
             boost::mt19937&, boost::uniform_real<> > _generator;
     };
-} } // namespace dd { namespace detail {
+} } // namespace ddd { namespace detail {
 
 #endif // #ifndef DD_DETAIL_NUMBERGENERATOR_H_INCLUDED

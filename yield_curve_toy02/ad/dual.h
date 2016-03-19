@@ -1,15 +1,19 @@
-#ifndef AD_DUAL_H_INCLUDED
-#define AD_DUAL_H_INCLUDED
+#ifndef DDD_AD_DUAL_H_INCLUDED
+#define DDD_AD_DUAL_H_INCLUDED
 
+#include "dual_functor.h"
 #include "helper_macro.h"
 #include "type_traits.h"
 #include "vector_expression.h"
 #include "vector.h"
 
 #include <boost/static_assert.hpp>
+#include <boost/mpl/and.hpp>
+#include <boost/type_traits/is_scalar.hpp>
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/utility/enable_if.hpp>
 
-namespace ad {
+namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
     
     template <typename E> 
@@ -25,124 +29,195 @@ namespace ad {
         }
     };
 
-    template <typename T, int N>
-    struct infinitesmal_type_traits {
-    public:
-        typedef ublas::vector<T> type;
-        typedef typename type_traits<T>::const_reference result_type;
-    public:
-        static result_type apply(const T& d, const int n) {
-            return d;
-        }
-    };
-
-
-    template <typename T, int N>
-    class dual : public dual_expression<dual<T,N> > {
-    BOOST_STATIC_ASSERT((N > 0));
+    template <typename V, typename I = ublas::vector<V> >
+    class dual : public dual_expression<dual<V, I> > {
     private:
-        typedef dual<T, N> self_type;
-        typedef ublas::vector<T> infinitesmal_type;
+        typedef dual<V, I> self_type;
     public:
-        typedef T value_type;
-        typedef typename type_traits<value_type>::reference reference;
-        typedef typename type_traits<value_type>::const_reference
-            const_reference;
-        typedef typename type_traits<infinitesmal_type>::reference 
-            infinitesmal_reference;
-        typedef 
-            typename type_traits<infinitesmal_type>::const_reference 
-                const_infinitesmal_reference;
+        typedef V value_type;
+        typedef V& value_reference;
+        typedef const V& const_value_reference;
+        //inf
+        typedef I inf_type;
+        typedef I& inf_reference;
+        typedef const I& const_inf_reference;
+        //
+        typedef const self_type& const_reference;
+        typedef self_type& reference;
+        typedef const self_type& const_closure_type;
 
-        static const int size_value = N;
     public:
         explicit dual() 
-        : _value(0), _infinitesmal(N, 0)
+        : _v(0), _d(0)
+        {
+        }
+
+        template <typename AE>
+        dual(const dual_expression<AE>& ae) 
+        : _v(ae().v()), _d(ae().d())
         {
         }
 
         dual(const value_type& value) 
-        : _value(value), _infinitesmal(N, 0)
+        : _v(value), _d(0)
         {
         }
 
-        //TODO:need to check infinitesmal_type is same size.
-        template<typename E>
+        //TODO:need to check inf_type is same size.
         dual(
             const value_type& value, 
-            const ublas::vector_expression<E>& infinitesmal) 
-        : _value(value), _infinitesmal(infinitesmal)
+            const inf_type& d) 
+        : _v(value), _d(d)
         {
         }
 
-        reference v() 
+        value_reference v()
         {
-            return _value;
+            return _v;
         }
 
-        const_reference v() const 
+        const_value_reference v() const
         {
-            return _value;
+            return _v;
         }
 
-        infinitesmal_reference d()
+        inf_reference d()
         {
-            return _infinitesmal;
+            return _d;
         }
 
-        const_infinitesmal_reference d() const 
+        const_inf_reference d() const
         {
-            return _infinitesmal;
+            return _d;
         }
 
     private:
-        value_type _value;
-        infinitesmal_type _infinitesmal;
+        value_type _v;
+        inf_type _d;
     };
 
-    template<typename E1, typename E2, int N>
-    dual<typename promote_traits<E1, E2>::type, N> 
-        operator +(const dual<E1, N>& x, const dual<E2, N>& y)
+    /*
+     * dual_operator_traits
+     */
+    template <typename D1, typename D2, typename F>
+    struct dual_binary_traits {
+    private:
+        typedef F functor_type;
+    public:
+        //value
+        typedef typename F::value_traits value_traits;
+        typedef typename value_traits::result_type value_result_type;
+        //inf
+        typedef typename F::inf_traits inf_traits;
+        typedef typename inf_traits::result_type inf_result_type;
+        //
+        typedef dual<value_result_type, inf_result_type> result_type;
+        typedef result_type expression_type;
+    };
+
+    //dual<V, I> + dual<V, I> -> dual<V+V, I+I>
+    template <typename E1, typename E2>
+    typename dual_binary_traits<E1, E2, dual_plus<E1, E2> >::result_type
+    operator +(const dual_expression<E1>& e1, const dual_expression<E2>& e2)
     {
-        typedef typename promote_traits<E1, E2>::type expression_type;
-        return dual<expression_type, N>(x.v() + y.v(), x.d() + y.d());
+        typedef dual_binary_traits<E1, E2, dual_plus<E1, E2> > Tr;
+        //value
+        typedef typename Tr::value_traits value_traits;
+        typedef typename Tr::value_result_type value_result_type;
+        //inf
+        typedef typename Tr::inf_traits inf_traits;
+        typedef typename Tr::inf_result_type inf_result_type;
+        //expression
+        typedef typename Tr::expression_type expression_type;
+
+        return expression_type(
+            value_traits::apply(e1(), e2()), 
+            inf_traits::apply(e1(), e2()));
     }
 
-    template<typename E1, typename E2, int N>
-    dual<typename promote_traits<E1, E2>::type, N> 
-        operator -(const dual<E1, N>& x, const dual<E2, N>& y)
+    //dual<V, I> - dual<V, I> -> dual<V-V, I-I>
+    template <typename E1, typename E2>
+    typename dual_binary_traits<E1, E2, dual_minus<E1, E2> >::result_type
+    operator -(const dual_expression<E1>& e1, const dual_expression<E2>& e2)
     {
-        typedef typename promote_traits<E1, E2>::type expression_type;
-        return dual<expression_type, N>(x.v() - y.v(), x.d() - y.d());
+        typedef dual_binary_traits<E1, E2, dual_minus<E1, E2> > Tr;
+        //value
+        typedef typename Tr::value_traits value_traits;
+        typedef typename Tr::value_result_type value_result_type;
+        //inf
+        typedef typename Tr::inf_traits inf_traits;
+        typedef typename Tr::inf_result_type inf_result_type;
+        //expression
+        typedef typename Tr::expression_type expression_type;
+
+        return expression_type(
+            value_traits::apply(e1(), e2()), 
+            inf_traits::apply(e1(), e2()));
     }
 
-    template<typename E1, typename E2, int N>
-    dual<typename promote_traits<E1, E2>::type, N> 
-        operator *(const dual<E1, N>& x, const dual<E2, N>& y)
+    //dual<V1, I1> * dual<V2, I2> -> dual<V1*V2, V1*I2+I1*V2>
+    template <typename E1, typename E2>
+    typename dual_binary_traits<E1, E2, dual_multiplies<E1, E2> >::result_type
+    operator *(const dual_expression<E1>& e1, const dual_expression<E2>& e2)
     {
-        typedef typename promote_traits<E1, E2>::type expression_type;
-        typedef dual<expression_type, N> result_type;
-        return result_type(x.v() * y.v(), x.d() * y.v() + x.v() * y.d());
+        typedef dual_binary_traits<E1, E2, dual_multiplies<E1, E2> > Tr;
+        //value
+        typedef typename Tr::value_traits value_traits;
+        //inf
+        typedef typename Tr::inf_traits inf_traits;
+        //expression
+        typedef typename Tr::expression_type expression_type;
+
+        return expression_type(
+            value_traits::apply(e1(), e2()), 
+            inf_traits::apply(e1(), e2()));
     }
 
-    template<typename E1, typename E2, int N>
-    dual<typename promote_traits<E1, E2>::type, N> 
-        operator /(const dual<E1, N>& x, const dual<E2, N>& y)
+    //dual<V1, I1> / dual<V2, I2> -> dual<V1/V2, (I1*V2-V1*I2)/(V2*V2)>
+    template <typename E1, typename E2>
+    typename dual_binary_traits<E1, E2, dual_divides<E1, E2> >::result_type
+    operator /(const dual_expression<E1>& e1, const dual_expression<E2>& e2)
     {
-        //TODO: need to check zero division.
-        typedef typename promote_traits<E1, E2>::type expression_type;
-        typedef dual<expression_type, N> result_type;
-        return result_type(x.v() / y.v(), 
-            (x.d() * y.v() - x.v() * y.d()) / (y.v() * y.v()));
+        typedef dual_binary_traits<E1, E2, dual_divides<E1, E2> > Tr;
+        //value
+        typedef typename Tr::value_traits value_traits;
+        //inf
+        typedef typename Tr::inf_traits inf_traits;
+        //expression
+        typedef typename Tr::expression_type expression_type;
+
+        return expression_type(
+            value_traits::apply(e1(), e2()), 
+            inf_traits::apply(e1(), e2()));
     }
+
+    namespace detail {
+        template <typename V1, typename I1, typename T>
+        struct dual_plus_not_dual_traits {
+        public:
+            typedef typename dual_binary_traits<
+                dual<V1, I1>, 
+                dual<T, I1>,
+                dual_plus<dual<V1, I1>, dual<T, I1> > >::result_type type;
+        };
+    } // namespace detail
 
     // dual<double> = dual<double> + double
     // T is not dual, not vector, arithmetic.
-    template<typename T, typename E, int N>
-    dual<E, N> operator +(const dual<E, N>& x, const T& y)
-    {
-        return x + dual<T, N>(y);
-    }
+    // TODO:need to modify dual binary operators to make these kind of operations available.
+//    template<typename V1, typename I1, typename T>
+//    typename boost::lazy_enable_if<
+//        boost::mpl::not_<is_dual<T> >, 
+//        detail::dual_plus_not_dual_traits<V1, I1, T> >::type
+//    operator +(const dual<V1, I1>& x, const T& y)
+//    {
+//        static dual<T, I1> d(1.0, I1(0));
+//        d.v() = y;
+//        d.d().resize(x.d().size());
+//        return x + dual<double>(2.0, I1(2));
+//    }
+
+    /*
     // dual<double> =  double(constant) + dual<double>
     template<typename T, typename E, int N>
     dual<E, N> operator +(const T& x, const dual<E, N>& y)
@@ -188,9 +263,10 @@ namespace ad {
     {
         return dual<E, N>(x) / y;
     }
+    */
 
-} // namespace ad {
+} } // namespace ddd { namespace ad {
 
 
-#endif // #ifndef AD_DUAL_H_INCLUDED
+#endif // #ifndef DDD_AD_DUAL_H_INCLUDED
 

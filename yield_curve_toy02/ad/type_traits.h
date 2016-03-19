@@ -1,14 +1,15 @@
-#ifndef AD_TYPE_TRAITS_H_INCLUDED
-#define AD_TYPE_TRAITS_H_INCLUDED
+#ifndef DDD_AD_TYPE_TRAITS_H_INCLUDED
+#define DDD_AD_TYPE_TRAITS_H_INCLUDED
 
 #include <boost/type_traits/is_base_of.hpp>
+#include <boost/numeric/ublas/traits.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/vector_expression.hpp>
 
 #include "ad/fwd.h"
 #include "ad/dual.h"
 
-namespace ad {
+namespace ddd { namespace ad {
     // default traits
     template <typename T>
     struct type_traits {
@@ -21,53 +22,58 @@ namespace ad {
     };
 
     //TODO: need to implement.
-    template <typename T1, typename T2>
+    template<class X, class Y>
     struct promote_traits {
-        typedef T1 type;
+        typedef X type;
+    };
+
+    /*
+     * is_scalar
+     */
+    //TODO: dual<double> is scalar?
+    template <typename T> 
+    struct is_scalar 
+    : boost::mpl::bool_<boost::is_scalar<T>::value> {
+    };
+
+    /*
+     * is_vector
+     */
+    template <typename T> 
+    struct is_vector : boost::mpl::bool_<
+        boost::is_base_of<ublas::vector_expression<T>, T>::value> {
     };
 
     /*
      * is_dual
      */
-    template <typename T, bool Cond 
-        = boost::is_base_of<dual_expression<T>, T>::value> 
-    struct is_dual; 
-
+    //scalar dual
     template <typename T>
-    struct is_dual<T, false> {
-        typedef T type;
-        static const bool value = false;
+    struct is_scalar_dual 
+    : boost::mpl::bool_<boost::is_base_of<dual_expression<T>, T>::value> 
+    {
     };
 
-    template <typename T> 
-    struct is_dual<T, true> {
-        typedef T type;
-        static const bool value = true;
-    };
-
-
-    /*
-     * is_vector
-     */
-    template <typename T, bool Cond = 
-        boost::is_base_of<
-        boost::numeric::ublas::vector_expression<T>, 
-        T>::value> 
-    struct is_vector;
-
-    template <typename T> 
-    struct is_vector<T, false> {
-        typedef T type;
-        static const bool value = false;
+    //vector dual
+    template <typename T>
+    struct is_vector_dual<T, true> 
+    : boost::mpl::bool_<is_scalar_dual<typename T::value_type>::value> {
     };
 
     template <typename T>
-    struct is_vector<T, true> {
-        typedef T type;
-        static const bool value = true;
+    struct is_vector_dual<T, false> : boost::mpl::bool_<false> {
     };
 
-} // namespace ad {
+    //is_dual
+    template <typename T>
+    struct is_dual : boost::mpl::bool_<
+         boost::mpl::or_<
+             is_vector_dual<T>, 
+             is_scalar_dual<T> >::value> {
+    };
 
-#endif // #ifndef AD_TYPE_TRAITS_H_INCLUDED
+
+} } // namespace ddd { namespace ad {
+
+#endif // #ifndef DDD_AD_TYPE_TRAITS_H_INCLUDED
 

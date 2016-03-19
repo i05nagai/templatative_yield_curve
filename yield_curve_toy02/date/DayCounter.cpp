@@ -1,6 +1,6 @@
 #include "DayCounter.h"
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
     double DayCounter::operator()(const Date& start, const Date& end) const
     {
         return this->doOperatorParenthesis();
@@ -11,5 +11,5 @@ namespace dd { namespace date {
         return boost::shared_ptr<DayCounter>(this->doClone());
     }
 
-} // namespace dd { namespace date {
+} // namespace ddd { namespace date {
 

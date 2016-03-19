@@ -1,59 +1,19 @@
-#ifndef DD_YC_CALIBRATOR_H_INCLUDED
-#define DD_YC_CALIBRATOR_H_INCLUDED
+#ifndef DDD_YC_CALIBRATOR_H_INCLUDED
+#define DDD_YC_CALIBRATOR_H_INCLUDED
 
 #include "ad/type_traits.h"
 #include <boost/type_traits/remove_reference.hpp>
 
-namespace dd { namespace yc {
-
-    // F f -> F' f'?
-    //TODO:need to implement
-    template <typename F>
-    struct differentiate_traits {
-    private:
-        typedef differentiate_traits<F> this_type;
-    public:
-        typedef  result_type;
-    public:
-        static result_type apply(const F& f)
-        {
-            return f;
-        }
-    private:
-    };
-
-    template <typename F, bool Cond = ad::is_vector<F>::value>
-    struct functor1_traits;
+namespace ddd { namespace yc {
 
     template <typename F>
-    struct functor1_traits<F, false> {
-    private:
-        typedef functor1_traits<F, false> this_type;
-    public:
-        typedef F function_type;
-        typedef typename F::arg1_type arg1_type;
-        typedef typename F::result_type result_type;
-    public:
-    private:
-    };
-
-    template <typename F>
-    struct functor1_traits<F, true> {
-    private:
-        typedef functor1_traits<F, true> this_type;
-    public:
-        typedef typename F::value_type function_type;
-        typedef typename function_type::arg1_type arg1_type;
-        typedef typename function_type::result_type result_type;
-    public:
-    private:
-    };
+    struct functor_traits;
 
     template <typename F>
     class NewtonRaphson {
     private:
         typedef NewtonRaphson<F> this_type;
-        typedef functor1_traits<F> _Tr;
+        typedef functor_traits<F> _Tr;
     public:
         typedef typename _Tr::function_type function_type;
         typedef typename _Tr::result_type function_result_type;
@@ -81,8 +41,9 @@ namespace dd { namespace yc {
             while(this->isConverged(x1, x2, count))
             {
                 x1 = x2;
-                x2 = x1 - differentiate_traits<F>::apply(f) * y;
-                y = f(x1);
+                const function_result_type& r = f(x1);
+                x2 = x1 - ad::invert(r.d()) * y;
+                y = r.v();
                 ++count;
             }
         }
@@ -145,7 +106,7 @@ namespace dd { namespace yc {
             const method_type& m,
             const argument_type& x0)
         {
-            return m.optimize(f, x0);
+            return m.optimize(x0);
         }
 
     private:
@@ -153,6 +114,7 @@ namespace dd { namespace yc {
     };
 
     
-} } // namespace dd { namespace yc {
+} } // namespace ddd { namespace yc {
 
-#endif // #ifndef DD_YC_CALIBRATOR_H_INCLUDED
+#endif // #ifndef DDD_YC_CALIBRATOR_H_INCLUDED
+

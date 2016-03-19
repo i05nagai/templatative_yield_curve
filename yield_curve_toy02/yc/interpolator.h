@@ -1,9 +1,9 @@
-#ifndef DD_YC_INTERPOLATION_H_INCLUDED
-#define DD_YC_INTERPOLATION_H_INCLUDED
+#ifndef DDD_YC_INTERPOLATION_H_INCLUDED
+#define DDD_YC_INTERPOLATION_H_INCLUDED
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 
-namespace dd { namespace yc {
+namespace ddd { namespace yc {
     namespace ublas = boost::numeric::ublas;
 
     template <typename I>
@@ -238,6 +238,6 @@ namespace dd { namespace yc {
         
     };
     
-} } // namespace dd { namespace yc {
+} } // namespace ddd { namespace yc {
 
-#endif // #ifndef DD_YC_INTERPOLATION_H_INCLUDED
+#endif // #ifndef DDD_YC_INTERPOLATION_H_INCLUDED

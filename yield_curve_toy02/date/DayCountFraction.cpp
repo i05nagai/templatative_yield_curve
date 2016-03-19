@@ -1,6 +1,6 @@
 #include "DayCountFraction.h"
 
-namespace dd { namespace date {
+namespace ddd { namespace date {
 
     DayCountFraction::DayCountFraction(
         const boost::shared_ptr<DayCounter> dayCounter)
@@ -15,4 +15,4 @@ namespace dd { namespace date {
         return _dayCounter(start, end);
     }
 
-} // namespace dd { namespace date {
+} // namespace ddd { namespace date {
