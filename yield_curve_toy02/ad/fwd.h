@@ -72,6 +72,88 @@ namespace ddd { namespace ad {
     template <typename D, bool Cond = is_dual<D>::value>
     struct jacobian_matrix_traits;
 
+
+    namespace detail {
+        //plus
+        template <typename E1, typename E2, bool Condition = 
+            boost::mpl::and_<
+                is_vector<typename E1::infinitesimal_type>,
+                is_vector<typename E2::infinitesimal_type> >::value
+        >
+        struct infinitesimal_vector_plus_vector_traits;
+
+        template <typename E1, typename E2, bool Condition = 
+            boost::mpl::and_<
+                boost::is_scalar<typename E1::infinitesimal_type>,
+                boost::is_scalar<typename E2::infinitesimal_type> >::value
+        >
+        struct infinitesimal_scalar_plus_scalar_traits;
+
+        //minus
+        template <typename E1, typename E2, bool Condition = 
+            boost::mpl::and_<
+                is_vector<typename E1::infinitesimal_type>,
+                is_vector<typename E2::infinitesimal_type> >::value
+        >
+        struct infinitesimal_vector_minus_vector_traits;
+
+        template <typename E1, typename E2, bool Condition = 
+            boost::mpl::and_<
+                boost::is_scalar<typename E1::infinitesimal_type>,
+                boost::is_scalar<typename E2::infinitesimal_type> >::value
+        >
+        struct infinitesimal_scalar_minus_scalar_traits;
+
+
+        //multiplies
+        template <typename E1, typename E2, bool Condition =
+            boost::mpl::and_<
+                is_vector<typename E1::infinitesimal_type>,
+                is_vector<typename E2::infinitesimal_type> >::value
+        >
+        struct infinitesimal_vector_multiplies_vector_traits;
+
+        template <typename E1, typename E2, bool Condition = 
+            boost::mpl::and_<
+                boost::is_scalar<typename E1::infinitesimal_type>,
+                boost::is_scalar<typename E2::infinitesimal_type> >::value
+        >
+        struct infinitesimal_scalar_multiplies_scalar_traits;
+
+        //divides
+        template <typename E1, typename E2, bool Condition = 
+            boost::mpl::and_<
+                is_vector<typename E1::infinitesimal_type>,
+                is_vector<typename E2::infinitesimal_type> >::value
+        >
+        struct infinitesimal_vector_divides_vector_traits;
+
+        template <typename E1, typename E2, bool Condition = 
+            boost::mpl::and_<
+                boost::is_scalar<typename E1::infinitesimal_type>,
+                boost::is_scalar<typename E2::infinitesimal_type> >::value
+        >
+        struct infinitesimal_scalar_divides_scalar_traits;
+        
+    } // namespace detail
+
+
+    //E1 + E2 -> expression_type of E1 + E2
+    template <typename E1, typename E2>
+    struct infinitesimal_plus_expression_traits;
+
+    //E1 - E2 -> expression_type of E1 - E2
+    template <typename E1, typename E2>
+    struct infinitesimal_minus_expression_traits;
+
+    //E1 * E2 -> expression_type of E1 * E2
+    template <typename E1, typename E2>
+    struct infinitesimal_multiplies_expression_traits;
+
+    //E1 / E2 -> expression_type of E1 / E2
+    template <typename E1, typename E2>
+    struct infinitesimal_divides_expression_traits;
+
     /*
      * dual_functor.h
      */
@@ -101,41 +183,6 @@ namespace ddd { namespace ad {
 
     template <typename D1, typename D2>
     struct dual_inf_plus_traits;
-
-    //dual plus
-    template <typename D1, typename D2>
-    class dual_plus;
-
-    //operator -
-    //value part
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            boost::is_scalar<typename D1::value_type>,
-            boost::is_scalar<typename D2::value_type> >::value>
-    struct dual_value_scalar_minus_scalar_traits;
-    
-    template <typename D1, typename D2>
-    struct dual_value_minus_traits;
-
-    //inf part
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            is_vector<typename D1::inf_type>,
-            is_vector<typename D2::inf_type> >::value>
-    struct dual_inf_vector_minus_vector_traits;
-
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            boost::is_scalar<typename D1::inf_type>,
-            boost::is_scalar<typename D2::inf_type> >::value>
-    struct dual_inf_scalar_minus_scalar_traits;
-
-    template <typename D1, typename D2>
-    struct dual_inf_minus_traits;
-
-    //dual minus
-    template <typename D1, typename D2>
-    class dual_minus;
 
     //operator *
     //value part
@@ -167,37 +214,6 @@ namespace ddd { namespace ad {
     //dual part
     template <typename D1, typename D2>
     class dual_multiplies;
-
-    //operator /
-    //value part
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            boost::is_scalar<typename D1::value_type>,
-            boost::is_scalar<typename D2::value_type> >::value>
-    struct dual_value_scalar_divides_scalar_traits;
-
-    template <typename D1, typename D2>
-    struct dual_value_divides_traits;
-
-    //inf part
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            is_vector<typename D1::inf_type>,
-            is_vector<typename D2::inf_type> >::value>
-    struct dual_inf_vector_divides_vector_traits;
-
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            boost::is_scalar<typename D1::inf_type>,
-            boost::is_scalar<typename D2::inf_type> >::value>
-    struct dual_inf_scalar_divides_scalar_traits;
-
-    template <typename D1, typename D2>
-    struct dual_inf_divides_traits;
-
-    //dual part
-    template <typename D1, typename D2>
-    class dual_divides;
 
 } } // namespace ddd { namespace ad {
 

@@ -36,28 +36,28 @@ namespace ad_test {
         std::cout << "---size=1" << std::endl;
         //case: size = 1
         {
-            ublas::vector<double> d1(1, 0.0);
-            ublas::vector<double> d2(1, 1.0);
-            ad::dual<double> c1(1.0, d1);
-            ad::dual<double> c2(2.0, d2);
-            DISPLAY_DUAL(c1);
-            DISPLAY_DUAL(c2);
-            ad::dual<double> c3 = c1 + c2;
-            ad::dual<double> c4 = c1 - c2;
-            ad::dual<double> c5 = c1 * c2;
-            ad::dual<double> c6 = c1 / c2;
-            ad::dual<double> c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2;
-            std::cout << "c3 = c1 + c2" << std::endl;
-            DISPLAY_DUAL(c3);
-            std::cout << "c4 = c1 - c2" << std::endl;
-            DISPLAY_DUAL(c4);
-            std::cout << "c5 = c1 * c2" << std::endl;
-            DISPLAY_DUAL(c5);
-            std::cout << "c6 = c1 / c2" << std::endl;
-            DISPLAY_DUAL(c6);
-            std::cout << "c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2" << std::endl;
-            DISPLAY_DUAL(c0);
-        }
+           ublas::vector<double> d1(1, 0.0);
+           ublas::vector<double> d2(1, 1.0);
+           ad::dual<double> c1(1.0, d1);
+           ad::dual<double> c2(2.0, d2);
+           DISPLAY_DUAL(c1);
+           DISPLAY_DUAL(c2);
+           ad::dual<double> c3 = c1 + c2;
+           ad::dual<double> c4 = c1 - c2;
+           ad::dual<double> c5 = c1 * c2;
+           ad::dual<double> c6 = c1 / c2;
+           ad::dual<double> c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2;
+           std::cout << "c3 = c1 + c2" << std::endl;
+           DISPLAY_DUAL(c3);
+           std::cout << "c4 = c1 - c2" << std::endl;
+           DISPLAY_DUAL(c4);
+           std::cout << "c5 = c1 * c2" << std::endl;
+           DISPLAY_DUAL(c5);
+           std::cout << "c6 = c1 / c2" << std::endl;
+           DISPLAY_DUAL(c6);
+           std::cout << "c0 = c1 + c2 + c1 - c2 + c1 * c2 + c1 / c2" << std::endl;
+           DISPLAY_DUAL(c0);
+       }
 
         //case: size = 2
         {
@@ -99,15 +99,15 @@ namespace ad_test {
         }
 
         //case: check operator dual x double
-        std::cout << "---check operator dual x double" << std::endl;
-        {
-            //ad::dual<double> c(1.0, d);
-            //double v = 2.0;
-            //DISPLAY_DUAL(c);
-            //DISPLAY_VAR(v);
-            //ad::dual<double> c3 = c + v;
-            //DISPLAY_DUAL(c3);
-        }
+//        std::cout << "---check operator dual x double" << std::endl;
+//        {
+//            ad::dual<double> c = ad::make_variable(1.0, 2, 0);
+//            double v = 2.0;
+//            DISPLAY_DUAL(c);
+//            DISPLAY_VAR(v);
+//            ad::dual<double> c3 = v + c;
+//            //DISPLAY_DUAL(c3);
+//        }
 
         std::cout << "---------end---------" << std::endl;
         return true;
