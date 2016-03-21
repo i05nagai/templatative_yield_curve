@@ -6,6 +6,8 @@
 #include "type_traits.h"
 #include "vector_expression.h"
 #include "vector.h"
+#include "ad/dual_expression.h"
+#include "ad/dual_expression.h"
 
 #include <boost/static_assert.hpp>
 #include <boost/mpl/and.hpp>
@@ -15,19 +17,6 @@
 
 namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
-    
-    template <typename E> 
-    class dual_expression {
-    public:
-        typedef E expression_type;
-        typedef typename type_traits<expression_type>::const_reference 
-            const_reference;
-    public:
-        const_reference operator()() const 
-        {
-            return static_cast<const expression_type&>(*this);
-        }
-    };
 
     template <typename V, typename I = ublas::vector<V> >
     class dual : public dual_expression<dual<V, I> > {
@@ -38,9 +27,9 @@ namespace ddd { namespace ad {
         typedef V& value_reference;
         typedef const V& const_value_reference;
         //inf
-        typedef I inf_type;
-        typedef I& inf_reference;
-        typedef const I& const_inf_reference;
+        typedef I infinitesimal_type;
+        typedef I& infinitesimal_reference;
+        typedef const I& const_infinitesimal_reference;
         //
         typedef const self_type& const_reference;
         typedef self_type& reference;
@@ -54,8 +43,9 @@ namespace ddd { namespace ad {
 
         template <typename AE>
         dual(const dual_expression<AE>& ae) 
-        : _v(ae().v()), _d(ae().d())
+        : _v(ae().v()), _d()
         {
+
         }
 
         dual(const value_type& value) 
@@ -66,7 +56,7 @@ namespace ddd { namespace ad {
         //TODO:need to check inf_type is same size.
         dual(
             const value_type& value, 
-            const inf_type& d) 
+            const infinitesimal_type& d) 
         : _v(value), _d(d)
         {
         }
@@ -81,150 +71,103 @@ namespace ddd { namespace ad {
             return _v;
         }
 
-        inf_reference d()
+        infinitesimal_reference d()
         {
             return _d;
         }
 
-        const_inf_reference d() const
+        const_infinitesimal_reference d() const
         {
             return _d;
         }
 
     private:
         value_type _v;
-        inf_type _d;
+        infinitesimal_type _d;
     };
 
-    /*
-     * dual_operator_traits
-     */
-    template <typename D1, typename D2, typename F>
-    struct dual_binary_traits {
-    private:
-        typedef F functor_type;
-    public:
-        //value
-        typedef typename F::value_traits value_traits;
-        typedef typename value_traits::result_type value_result_type;
-        //inf
-        typedef typename F::inf_traits inf_traits;
-        typedef typename inf_traits::result_type inf_result_type;
-        //
-        typedef dual<value_result_type, inf_result_type> result_type;
-        typedef result_type expression_type;
-    };
+//    //E1 is not dual
+//    template<typename E1, typename E2, typename VF, typename IF>
+//    class dual_binary_scalar1 
+//    : public dual_expression<dual_binary_scalar1<E1, E2, VF, IF> > {
+//        typedef E1 expression1_type;
+//        typedef E2 expression2_type;
+//        typedef VF value_functor_type;
+//        typedef IF infinitesimal_functor_type;
+//        typedef const E1& expression1_closure_type;
+//        typedef typename E2::const_closure_type expression2_closure_type;
+//        typedef dual_binary<E1, E2, VF, IF> self_type;
+//
+//    public:
+//        //value
+//        typedef typename value_functor_type::result_type 
+//            value_type;
+//        typedef value_type const_value_reference;
+//        typedef const_value_reference value_reference;
+//        //infinitesimal
+//        typedef typename infinitesimal_functor_type::result_type 
+//            infinitesimal_type;
+//        typedef infinitesimal_type const_infinitesimal_reference;
+//        typedef const_infinitesimal_reference infinitesimal_reference;
+//        //closure
+//        typedef const self_type const_closure_type;
+//        typedef const_closure_type closure_type;
+//
+//        // Construction and destruction
+//        dual_binary_scalar1(const expression1_type& e1, const expression2_type& e2)
+//        : _e1(e1), _e2(e2)
+//        {
+//        }
+//
+//    public:
+//        // Element access
+//        const_value_reference v() const 
+//        {
+//            return value_functor_type::apply(_e1, _e2);
+//        }
+//
+//        const_infinitesimal_reference d() const 
+//        {
+//            return infinitesimal_functor_type::apply(_e1, _e2);
+//        }
+//
+//    private:
+//        expression1_closure_type _e1;
+//        expression2_closure_type _e2;
+//    };
+//
+//
+//    template<typename E1, typename E2, typename VF, typename IF>
+//    struct dual_binary_scalar1_traits {
+//        typedef dual_binary_scalar1<E1, E2, VF, IF> expression_type;
+//        typedef expression_type result_type; 
+//        typedef result_type type;
+//    };
 
-    //dual<V, I> + dual<V, I> -> dual<V+V, I+I>
-    template <typename E1, typename E2>
-    typename dual_binary_traits<E1, E2, dual_plus<E1, E2> >::result_type
-    operator +(const dual_expression<E1>& e1, const dual_expression<E2>& e2)
-    {
-        typedef dual_binary_traits<E1, E2, dual_plus<E1, E2> > Tr;
-        //value
-        typedef typename Tr::value_traits value_traits;
-        typedef typename Tr::value_result_type value_result_type;
-        //inf
-        typedef typename Tr::inf_traits inf_traits;
-        typedef typename Tr::inf_result_type inf_result_type;
-        //expression
-        typedef typename Tr::expression_type expression_type;
-
-        return expression_type(
-            value_traits::apply(e1(), e2()), 
-            inf_traits::apply(e1(), e2()));
-    }
-
-    //dual<V, I> - dual<V, I> -> dual<V-V, I-I>
-    template <typename E1, typename E2>
-    typename dual_binary_traits<E1, E2, dual_minus<E1, E2> >::result_type
-    operator -(const dual_expression<E1>& e1, const dual_expression<E2>& e2)
-    {
-        typedef dual_binary_traits<E1, E2, dual_minus<E1, E2> > Tr;
-        //value
-        typedef typename Tr::value_traits value_traits;
-        typedef typename Tr::value_result_type value_result_type;
-        //inf
-        typedef typename Tr::inf_traits inf_traits;
-        typedef typename Tr::inf_result_type inf_result_type;
-        //expression
-        typedef typename Tr::expression_type expression_type;
-
-        return expression_type(
-            value_traits::apply(e1(), e2()), 
-            inf_traits::apply(e1(), e2()));
-    }
-
-    //dual<V1, I1> * dual<V2, I2> -> dual<V1*V2, V1*I2+I1*V2>
-    template <typename E1, typename E2>
-    typename dual_binary_traits<E1, E2, dual_multiplies<E1, E2> >::result_type
-    operator *(const dual_expression<E1>& e1, const dual_expression<E2>& e2)
-    {
-        typedef dual_binary_traits<E1, E2, dual_multiplies<E1, E2> > Tr;
-        //value
-        typedef typename Tr::value_traits value_traits;
-        //inf
-        typedef typename Tr::inf_traits inf_traits;
-        //expression
-        typedef typename Tr::expression_type expression_type;
-
-        return expression_type(
-            value_traits::apply(e1(), e2()), 
-            inf_traits::apply(e1(), e2()));
-    }
-
-    //dual<V1, I1> / dual<V2, I2> -> dual<V1/V2, (I1*V2-V1*I2)/(V2*V2)>
-    template <typename E1, typename E2>
-    typename dual_binary_traits<E1, E2, dual_divides<E1, E2> >::result_type
-    operator /(const dual_expression<E1>& e1, const dual_expression<E2>& e2)
-    {
-        typedef dual_binary_traits<E1, E2, dual_divides<E1, E2> > Tr;
-        //value
-        typedef typename Tr::value_traits value_traits;
-        //inf
-        typedef typename Tr::inf_traits inf_traits;
-        //expression
-        typedef typename Tr::expression_type expression_type;
-
-        return expression_type(
-            value_traits::apply(e1(), e2()), 
-            inf_traits::apply(e1(), e2()));
-    }
-
-    namespace detail {
-        template <typename V1, typename I1, typename T>
-        struct dual_plus_not_dual_traits {
-        public:
-            typedef typename dual_binary_traits<
-                dual<V1, I1>, 
-                dual<T, I1>,
-                dual_plus<dual<V1, I1>, dual<T, I1> > >::result_type type;
-        };
-    } // namespace detail
-
-    // dual<double> = dual<double> + double
-    // T is not dual, not vector, arithmetic.
-    // TODO:need to modify dual binary operators to make these kind of operations available.
-//    template<typename V1, typename I1, typename T>
+    // dual<double> =  double(constant) + dual<double>
+//    template<typename T, typename E>
 //    typename boost::lazy_enable_if<
-//        boost::mpl::not_<is_dual<T> >, 
-//        detail::dual_plus_not_dual_traits<V1, I1, T> >::type
-//    operator +(const dual<V1, I1>& x, const T& y)
+//        boost::mpl::not_<is_dual<T> >,
+//        dual_binary_scalar1_traits<
+//            T, 
+//            E, 
+//            value_plus<T, E>,
+//            infinitesimal_plus<T, E> 
+//        >
+//    >::type
+//    operator +(const T& x, const dual_expression<E>& y)
 //    {
-//        static dual<T, I1> d(1.0, I1(0));
-//        d.v() = y;
-//        d.d().resize(x.d().size());
-//        return x + dual<double>(2.0, I1(2));
+//        typedef dual_binary_scalar1_traits<
+//            T, 
+//            E, 
+//            value_plus<T, E>,
+//            infinitesimal_plus<T, E> 
+//        > _Tr;
+//        typedef typename _Tr::expression_type expression_type;
+//        return expression_type(x, y);
 //    }
 
     /*
-    // dual<double> =  double(constant) + dual<double>
-    template<typename T, typename E, int N>
-    dual<E, N> operator +(const T& x, const dual<E, N>& y)
-    {
-        return dual<T, N>(x) + y;
-    }
-
     // dual<double> = dual<double> - double(constant)
     template<typename T, typename E, int N>
     dual<E, N> operator -(const dual<E, N>& x, const T& y)
