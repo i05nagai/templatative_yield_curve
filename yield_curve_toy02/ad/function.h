@@ -1,15 +1,14 @@
 #ifndef DDD_AD_FUNCTION_H_INCLUDED
 #define DDD_AD_FUNCTION_H_INCLUDED
 
-#include "ad/dual.h"
-#include "ad/functor.h"
-#include "ad/type_traits.h"
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/numeric/ublas/vector_expression.hpp>
 #include <boost/numeric/ublas/lu.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
-
+#include "ad/dual.h"
+#include "ad/functor.h"
+#include "ad/type_traits.h"
 
 namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;

@@ -1,6 +1,13 @@
+/**
+ * @file helper_macro.h
+ * @brief 
+ * @author i05nagai
+ * @version 0.0.1
+ * @date 2016-03-28
+ */
+
 #ifndef DDD_AD_HELPER_MACRO_H_INCLUDED
 #define DDD_AD_HELPER_MACRO_H_INCLUDED
-
 
 #include <iostream>
 

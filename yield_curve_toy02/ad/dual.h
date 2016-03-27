@@ -1,11 +1,17 @@
+/**
+ * @file dual.h
+ * @brief 
+ * @author i05nagai
+ * @version 0.0.1
+ * @date 2016-03-28
+ */
+
 #ifndef DDD_AD_DUAL_H_INCLUDED
 #define DDD_AD_DUAL_H_INCLUDED
 
-#include "dual_functor.h"
-#include "helper_macro.h"
-#include "type_traits.h"
-#include "vector_expression.h"
-#include "vector.h"
+#include "ad/dual_functor.h"
+#include "ad/helper_macro.h"
+#include "ad/type_traits.h"
 #include "ad/dual_expression.h"
 #include "ad/dual_expression.h"
 
