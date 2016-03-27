@@ -51,5 +51,18 @@
         std::cout << std::endl;                                             \
     }
 
+#define DISPLAY_JACOBIAN_MATRIX(x)                                          \
+    std::cout << #x":" << std::endl;                                        \
+    std::cout << "  size1: " << x.size1() << std::endl;                     \
+    std::cout << "  size2: " << x.size2() << std::endl;                     \
+    std::cout << "  values:" << std::endl;                                  \
+    for (std::size_t i = 0; i < x.size1(); ++i) {                           \
+        std::cout << "    ";                                                \
+        for (std::size_t j = 0; j < x.size2(); ++j) {                       \
+            std::cout << D(i, j) << " ";                                    \
+        }                                                                   \
+        std::cout << std::endl;                                             \
+    }
+
 #endif // #ifndef AD_HELPER_MACRO_H_INCLUDED
 

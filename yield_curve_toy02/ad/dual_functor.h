@@ -1,13 +1,21 @@
+/**
+ * @file dual_functor.h
+ * @brief 
+ * @author i05nagai
+ * @version 0.0.1
+ * @date 2016-03-27
+ */
+
 #ifndef DDD_AD_DUAL_FUNCTOR_H_INCLUDED
 #define DDD_AD_DUAL_FUNCTOR_H_INCLUDED
 
-#include "fwd.h"
 #include <boost/numeric/ublas/functional.hpp>
+#include "fwd.h"
 
 namespace ddd { namespace ad {
-    /*
-     * value binary functor
-     */
+    /*--------------------------------------------------------------------------
+     * value binary functors.
+     *-------------------------------------------------------------------------*/
 #define DEFINE_DUAL_VALUE_BINARY_FUNCTOR(op_name, op)                       \
     template<typename E1, typename E2>                                      \
     struct value_ ## op_name {                                              \
@@ -40,10 +48,9 @@ namespace ddd { namespace ad {
     DEFINE_DUAL_VALUE_BINARY_FUNCTOR(multiplies, *);
     DEFINE_DUAL_VALUE_BINARY_FUNCTOR(divides, /);
 
-
-    /*
-     * infinitesimal binary functor
-     */
+    /*--------------------------------------------------------------------------
+     * infinitesimal binary functors.
+     *-------------------------------------------------------------------------*/
     //for operator +
     template<typename E1, typename E2>
     struct infinitesimal_plus {

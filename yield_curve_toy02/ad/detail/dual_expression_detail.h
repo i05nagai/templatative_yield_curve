@@ -1,9 +1,16 @@
+/**
+ * @file dual_expression_detail.h
+ * @brief 
+ * @author i05nagai
+ * @version 0.0.1
+ * @date 2016-03-27
+ */
 #ifndef DDD_AD_DUAL_EXPRESSION_DETAIL_H_INCLUDED
 #define DDD_AD_DUAL_EXPRESSION_DETAIL_H_INCLUDED
 
-#include "ad/fwd.h"
 #include <boost/numeric/ublas/vector_expression.hpp>
 #include <boost/numeric/ublas/functional.hpp>
+#include "ad/fwd.h"
 
 namespace ddd { namespace ad { namespace detail {
 #define DEFINE_DUAL_INFINITESIMAL_BINARY_TRAITS1(op_name)                       \

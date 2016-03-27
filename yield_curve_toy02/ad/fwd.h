@@ -1,3 +1,11 @@
+/**
+ * @file fwd.h
+ * @brief 
+ * @author i05nagai
+ * @version 0.0.1
+ * @date 2016-03-27
+ */
+
 #ifndef DDD_AD_FWD_H_INCLUDED
 #define DDD_AD_FWD_H_INCLUDED
 
@@ -8,16 +16,18 @@
 namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
 
-    //template <typename E> class vector_expression;
-
+    /*--------------------------------------------------------------------------
+     * dual_function.h
+     *-------------------------------------------------------------------------*/
     template <typename E> class dual_expression;
     template <typename V, typename I> class dual;
 
-    /*
-     * exp
-     */
+    //exp
     template <typename E> struct exp_traits;
-    template <typename E> typename exp_traits<E>::result_type exp(
+
+    template <typename E> 
+    typename exp_traits<E>::result_type 
+    exp(
         const E& e, 
         typename boost::enable_if<boost::is_arithmetic<E> >::type* = NULL);
     //vector
@@ -25,12 +35,12 @@ namespace ddd { namespace ad {
     //dual
     template <typename E> struct dual_exp_traits;
 
-    /*
-     * log
-     */
+    //log
     template <typename E> struct log_traits;
+
     template <typename E> 
-    typename log_traits<E>::result_type log(
+    typename log_traits<E>::result_type 
+    log(
         const E& e,
         typename boost::enable_if<boost::is_arithmetic<E> >::type* = NULL);
     //vector
@@ -38,9 +48,9 @@ namespace ddd { namespace ad {
     //dual
     template <typename E> struct dual_log_traits;
 
-    /*
+    /*--------------------------------------------------------------------------
      * type_traits.h
-     */
+     *------------------------------------------------------------------------*/
     template <typename T> 
     struct type_traits;
 
@@ -62,17 +72,9 @@ namespace ddd { namespace ad {
     template <typename T>
     struct is_dual; 
 
-    /*
-     * jacobian_matrix.h
-     */
-    //dual jacobian_matrix: 
-    template <typename D, bool Cond = is_scalar_dual<D>::value>
-    struct dual_jacobian_matrix_traits;
-
-    template <typename D, bool Cond = is_dual<D>::value>
-    struct jacobian_matrix_traits;
-
-
+    /*--------------------------------------------------------------------------
+     * dual_functor_detail.h
+     *------------------------------------------------------------------------*/
     namespace detail {
         //plus
         template <typename E1, typename E2, bool Condition = 
@@ -138,6 +140,9 @@ namespace ddd { namespace ad {
     } // namespace detail
 
 
+    /*--------------------------------------------------------------------------
+     * dual_expression.h
+     *-------------------------------------------------------------------------*/
     //E1 + E2 -> expression_type of E1 + E2
     template <typename E1, typename E2>
     struct infinitesimal_plus_expression_traits;
@@ -154,66 +159,55 @@ namespace ddd { namespace ad {
     template <typename E1, typename E2>
     struct infinitesimal_divides_expression_traits;
 
-    /*
+    /*--------------------------------------------------------------------------
      * dual_functor.h
-     */
-    //operator +
-    //value part
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            boost::is_scalar<typename D1::value_type>,
-            boost::is_scalar<typename D2::value_type> >::value>
-    struct dual_value_scalar_plus_scalar_traits;
+     *------------------------------------------------------------------------*/
+    //value binary functors.
+    template<typename E1, typename E2>
+    struct value_plus;
+
+    template<typename E1, typename E2>
+    struct value_minus;
+
+    template<typename E1, typename E2>
+    struct value_multiplies;
+
+    template<typename E1, typename E2>
+    struct value_divides;
     
-    template <typename D1, typename D2>
-    struct dual_value_plus_traits;
 
-    //inf part
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            is_vector<typename D1::inf_type>,
-            is_vector<typename D2::inf_type> >::value>
-    struct dual_inf_vector_plus_vector_traits;
+    //infinitesimal binary functors.
+    template<typename E1, typename E2>
+    struct infinitesimal_plus;
 
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            boost::is_scalar<typename D1::inf_type>,
-            boost::is_scalar<typename D2::inf_type> >::value>
-    struct dual_inf_scalar_plus_scalar_traits;
+    template<typename E1, typename E2>
+    struct infinitesimal_minus;
 
-    template <typename D1, typename D2>
-    struct dual_inf_plus_traits;
+    template<typename E1, typename E2>
+    struct infinitesimal_multiplies;
 
-    //operator *
-    //value part
-    template <typename D1, typename D2, bool Cond = 
-        boost::mpl::and_<
-            boost::is_scalar<typename D1::value_type>,
-            boost::is_scalar<typename D2::value_type> >::value>
-    struct dual_value_scalar_multiplies_scalar_traits;
+    template<typename E1, typename E2>
+    struct infinitesimal_divides;
 
-    template <typename D1, typename D2>
-    struct dual_value_multiplies_traits;
+    /*--------------------------------------------------------------------------
+     * jacobian_matrix.h
+     *------------------------------------------------------------------------*/
+    namespace detail {
+        
+        template <typename D, bool Condition 
+            = is_vector<typename D::value_type::infinitesimal_type>::value>
+        class jacobian_matrix_adapter_vector_dual;
 
-    //inf part
-    template <typename D1, typename D2, bool Cond =
-        boost::mpl::and_<
-            is_vector<typename D1::inf_type>,
-            is_vector<typename D2::inf_type> >::value>
-    struct dual_inf_vector_multiplies_vector_traits;
+        template <typename D, bool Condition 
+            = is_vector<typename D::infinitesimal_type>::value>
+        class jacobian_matrix_adapter_scalar_dual;
 
-    template <typename D1, typename D2, bool Cond = 
-        boost::mpl::and_<
-            boost::is_scalar<typename D1::inf_type>,
-            boost::is_scalar<typename D2::inf_type> >::value>
-    struct dual_inf_scalar_multiplies_scalar_traits;
+        template <typename D, bool Condition = is_vector_dual<D>::value>
+        class jacobian_matrix_adapter_impl;
+    } // namespace detail
 
-    template <typename D1, typename D2>
-    struct dual_inf_multiplies_traits;
-
-    //dual part
-    template <typename D1, typename D2>
-    class dual_multiplies;
+    template <typename D>
+    class dual_jacobian_matrix_adapter;
 
 } } // namespace ddd { namespace ad {
 
