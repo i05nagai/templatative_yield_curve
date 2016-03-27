@@ -1,3 +1,11 @@
+/**
+ * @file type_traits.h
+ * @brief 
+ * @author i05nagai
+ * @version 0.0.1
+ * @date 2016-03-28
+ */
+
 #ifndef DDD_AD_TYPE_TRAITS_H_INCLUDED
 #define DDD_AD_TYPE_TRAITS_H_INCLUDED
 
@@ -5,12 +13,14 @@
 #include <boost/numeric/ublas/traits.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/vector_expression.hpp>
-
 #include "ad/fwd.h"
 #include "ad/dual.h"
 
 namespace ddd { namespace ad {
-    // default traits
+
+    /*--------------------------------------------------------------------------
+     * type_traits
+     *------------------------------------------------------------------------*/
     template <typename T>
     struct type_traits {
     private:
@@ -21,32 +31,35 @@ namespace ddd { namespace ad {
         typedef T& reference;
     };
 
+    /*--------------------------------------------------------------------------
+     * promote_traits
+     *------------------------------------------------------------------------*/
     //TODO: need to implement.
     template<class X, class Y>
     struct promote_traits {
         typedef X type;
     };
 
-    /*
+    /*--------------------------------------------------------------------------
      * is_scalar
-     */
+     *------------------------------------------------------------------------*/
     //TODO: dual<double> is scalar?
     template <typename T> 
     struct is_scalar 
     : boost::mpl::bool_<boost::is_scalar<T>::value> {
     };
 
-    /*
+    /*--------------------------------------------------------------------------
      * is_vector
-     */
+     *------------------------------------------------------------------------*/
     template <typename T> 
     struct is_vector : boost::mpl::bool_<
         boost::is_base_of<ublas::vector_expression<T>, T>::value> {
     };
 
-    /*
+    /*--------------------------------------------------------------------------
      * is_dual
-     */
+     *------------------------------------------------------------------------*/
     //scalar dual
     template <typename T>
     struct is_scalar_dual 

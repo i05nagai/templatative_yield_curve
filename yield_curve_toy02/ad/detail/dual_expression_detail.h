@@ -5,6 +5,7 @@
  * @version 0.0.1
  * @date 2016-03-27
  */
+
 #ifndef DDD_AD_DUAL_EXPRESSION_DETAIL_H_INCLUDED
 #define DDD_AD_DUAL_EXPRESSION_DETAIL_H_INCLUDED
 
@@ -13,13 +14,16 @@
 #include "ad/fwd.h"
 
 namespace ddd { namespace ad { namespace detail {
+    /*--------------------------------------------------------------------------
+     * traits for plus and minus
+     *------------------------------------------------------------------------*/
 #define DEFINE_DUAL_INFINITESIMAL_BINARY_TRAITS1(op_name)                       \
     /*no implementation*/                                                       \
     template <typename E1, typename E2>                                         \
     struct infinitesimal_vector_ ## op_name ## _vector_traits<E1, E2, false>;   \
                                                                                 \
     /*case: I1 = vector, I2 = vector*/                                          \
-    /*fromt E1 x E2 -> expression_type*/                                        \
+    /*from E1 x E2 -> expression_type*/                                         \
     template <typename E1, typename E2>                                         \
     struct infinitesimal_vector_ ## op_name ## _vector_traits<E1, E2, true> {   \
     private:                                                                    \
@@ -69,15 +73,15 @@ namespace ddd { namespace ad { namespace detail {
 
 
 namespace ddd { namespace ad { namespace detail {
-    /*
-     * multiplies
-     */
+    /*--------------------------------------------------------------------------
+     * traits for multiplies
+     *------------------------------------------------------------------------*/
     //no implementation
     template <typename E1, typename E2>
     struct infinitesimal_vector_multiplies_vector_traits<E1, E2, false>;
 
     //case: V1 = V2 = scalar, I1 = vector, I2 = vector
-    //fromt E1 x E2 -> expression_type
+    //from E1 x E2 -> expression_type
     template <typename E1, typename E2>
     struct infinitesimal_vector_multiplies_vector_traits<E1, E2, true> {
     private:
@@ -133,7 +137,7 @@ namespace ddd { namespace ad { namespace detail {
     };
 
     //case: V1 = V2 = scalar, I1 = scalar, I2 = scalar
-    //fromt E1 x E2 -> expression_type
+    //from E1 x E2 -> expression_type
     template <typename E1, typename E2>
     struct infinitesimal_scalar_multiplies_scalar_traits<E1, E2, true> {
     private:
@@ -164,15 +168,15 @@ namespace ddd { namespace ad { namespace detail {
 
 
 namespace ddd { namespace ad { namespace detail {
-    /*
-     * divides
-     */
+    /*--------------------------------------------------------------------------
+     * traits for divides
+     *------------------------------------------------------------------------*/
     //no implementation
     template <typename E1, typename E2>
     struct infinitesimal_vector_divides_vector_traits<E1, E2, false>;
 
     //case: V1 = V2 = scalar, I1 = vector, I2 = vector
-    //fromt E1 x E2 -> expression_type
+    //from E1 x E2 -> expression_type
     template <typename E1, typename E2>
     struct infinitesimal_vector_divides_vector_traits<E1, E2, true> {
     private:
@@ -245,7 +249,7 @@ namespace ddd { namespace ad { namespace detail {
     };
 
     //case: V1 = V2 = scalar, I1 = scalar, I2 = scalar
-    //fromt E1 / E2 -> expression_type
+    //from E1 / E2 -> expression_type
     template <typename E1, typename E2>
     struct infinitesimal_scalar_divides_scalar_traits<E1, E2, true> {
     private:

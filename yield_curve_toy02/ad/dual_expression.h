@@ -1,10 +1,17 @@
+/**
+ * @file dual_expression.h
+ * @brief 
+ * @author i05nagai
+ * @version 0.0.1
+ * @date 2016-03-28
+ */
+
 #ifndef DDD_AD_DUAL_EXPRESSION_H_INCLUDED
 #define DDD_AD_DUAL_EXPRESSION_H_INCLUDED
 
 #include <boost/numeric/ublas/vector_expression.hpp>
 #include "ad/dual_functor.h"
 #include "ad/detail/dual_expression_detail.h"
-
 
 namespace ddd { namespace ad {
     namespace ublas = boost::numeric::ublas;
@@ -22,6 +29,9 @@ namespace ddd { namespace ad {
         }
     };
 
+    /*--------------------------------------------------------------------------
+     * dual_binary
+     *------------------------------------------------------------------------*/
     template<typename E1, typename E2, typename VF, typename IF>
     class dual_binary: public dual_expression<dual_binary<E1, E2, VF, IF> > {
         typedef E1 expression1_type;
@@ -69,12 +79,14 @@ namespace ddd { namespace ad {
         expression2_closure_type _e2;
     };
 
+    /*--------------------------------------------------------------------------
+     * infinitesimal expression traits
+     *------------------------------------------------------------------------*/
     //E1 + E2 -> expression_type of E1 + E2
     template <typename E1, typename E2>
     struct infinitesimal_plus_expression_traits 
     : detail::infinitesimal_scalar_plus_scalar_traits<E1, E2> {
     };
-
 
     //E1 - E2 -> expression_type of E1 - E2
     template <typename E1, typename E2>
@@ -101,9 +113,9 @@ namespace ddd { namespace ad {
         typedef expression_type result_type; 
     };
 
-    /*
+    /*--------------------------------------------------------------------------
      * dual binary operators
-     */
+     *------------------------------------------------------------------------*/
 #define DEFINE_DUAL_BINARY_OPERATOR(op_name,op)                                     \
     template<typename E1, typename E2>                                              \
     typename dual_binary_traits<                                                    \
